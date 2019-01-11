@@ -35,6 +35,13 @@ class LoginDataSourceRepository(
                     localDataSource.savePrefsUser(it.telephone!!, it.password!!, it.token!!)
                 })
             }
+
+
+    fun prefsUser(): Flowable<Either<Errors, UserInfo>> =
+        localDataSource.fetchPrefsUser()
+
+    fun prefsAutoLogin(): Single<Boolean> =
+        localDataSource.isAutoLogin()
 }
 
 class LoginRemoteDataSource(private var remote: ApiService) : ILoginRemoteDataSource {

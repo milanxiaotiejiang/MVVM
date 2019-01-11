@@ -1,8 +1,10 @@
 package com.huaqing.property.ui.login
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import arrow.core.Either
 import arrow.core.Option
 import arrow.core.none
 import arrow.core.some
@@ -13,11 +15,17 @@ import com.huaqing.property.common.loadings.CommonLoadingState
 import com.huaqing.property.db.UserInfo
 import com.huaqing.property.ext.arrow.whenNotNull
 import com.huaqing.property.ext.lifecycle.bindLifecycle
+import com.huaqing.property.ext.livedata.toFlowable
 import com.huaqing.property.http.globalHandleError
 import com.huaqing.property.model.Errors
 import com.huaqing.property.utils.toast
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
+import retrofit2.HttpException
 
-class LoginViewModel(private val repo: LoginDataSourceRepository) : BaseViewModel() {
+class LoginViewModel(
+    private val repo: LoginDataSourceRepository
+) : BaseViewModel() {
 
     val telephone: MutableLiveData<String> = MutableLiveData()
     val password: MutableLiveData<String> = MutableLiveData()
@@ -29,9 +37,66 @@ class LoginViewModel(private val repo: LoginDataSourceRepository) : BaseViewMode
 
     private val autoLogin: MutableLiveData<Boolean> = MutableLiveData()
 
+    override fun onCreate(lifecycleOwner: LifecycleOwner) {
+        super.onCreate(lifecycleOwner)
+
+        autoLogin.toFlowable()
+            .filter { it }
+            .doOnNext {
+                login()
+            }
+            .bindLifecycle(this)
+            .subscribe()
+
+
+        error.toFlowable()
+            .map { errorOpt ->
+                errorOpt.flatMap {
+                    when (it) {
+                        is Errors.EmptyInputError -> "username or password can't be null.".some()
+                        is HttpException ->
+                            when (it.code()) {
+                                401 -> "username or password error.".some()
+                                else -> "network error".some()
+                            }
+                        else -> none()
+                    }
+                }
+            }
+            .bindLifecycle(this)
+            .subscribe { errorMsg ->
+                errorMsg.whenNotNull {
+                    toast { it }
+                }
+            }
+
+        initAutoLogin()
+    }
+
+    private fun initAutoLogin() =
+        Single.zip(
+            repo.prefsUser().firstOrError(),
+            repo.prefsAutoLogin(),
+            BiFunction { either: Either<Errors, UserInfo>, autoLogin: Boolean ->
+                autoLogin to either
+            })
+            .bindLifecycle(this)
+            .subscribe { pair ->
+                pair.second.fold({ error ->
+                    applyState(error = error.some())
+                }, { entity ->
+                    applyState(
+                        telephone = entity.telephone.some() as Option<String>,
+                        password = entity.password.some() as Option<String>,
+                        autoLogin = pair.first
+                    )
+                })
+            }
+
     fun login() {
         when (telephone.value.isNullOrEmpty() || password.value.isNullOrEmpty()) {
-            true -> toast { "请输入信息" }
+            true ->
+                toast { "请输入信息" }
             false -> repo
                 .login(telephone.value!!, password.value!!)
                 .compose(globalHandleError())
@@ -96,7 +161,8 @@ class LoginViewModel(private val repo: LoginDataSourceRepository) : BaseViewMode
 }
 
 
-class LoginViewModelFactory(private val repo: LoginDataSourceRepository) : ViewModelProvider.Factory {
+class LoginViewModelFactory(private val repo: LoginDataSourceRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         LoginViewModel(repo) as T
 

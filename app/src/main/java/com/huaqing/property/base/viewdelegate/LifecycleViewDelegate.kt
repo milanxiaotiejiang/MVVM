@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
-open class LifecycleViewDelegate : IViewDelegate, LifecycleObserver {
+open class LifecycleViewDelegate : IViewDelegate {
 
     @CallSuper
     override fun onCreate(lifecycleOwner: LifecycleOwner) {
