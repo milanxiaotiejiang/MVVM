@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PropertyAndroid</string>
+    <string name="action_sign_in">登 录</string>
+    <string name="tip_enter_telep_hone">请输入手机号</string>
+    <string name="tip_enter_pass_word">请输入密码</string>
+
+
+
+    <string name="common_loading_empty">it\'s empty here</string>
+    <string name="common_loading_error">network error</string>
+</resources>
