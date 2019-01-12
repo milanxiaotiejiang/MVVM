@@ -20,7 +20,7 @@
             tools:replace="android:icon"
             android:theme="@style/AppTheme.NoActionBar">
 
-        <activity android:name="com.huaqing.property.ui.login.LoginActivity"
+        <activity android:name=".ui.login.LoginActivity"
                   android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

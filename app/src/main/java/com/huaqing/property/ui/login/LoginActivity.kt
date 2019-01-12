@@ -1,26 +1,23 @@
 package com.huaqing.property.ui.login
 
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.huaqing.property.R
-import com.huaqing.property.base.ui.BaseActivity
-import com.huaqing.property.databinding.ActivityLoginBinding
-import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
 
-class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewDelegate>() {
+class LoginActivity : AppCompatActivity() {
 
-    override val kodein: Kodein = Kodein.lazy {
-        extend(parentKodein)
-        import(loginKodeinModule)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+        supportFragmentManager.apply {
+            findFragmentByTag(TAG) ?: beginTransaction()
+                .add(R.id.flContainer, LoginFragment(), TAG)
+                .commitAllowingStateLoss()
+        }
     }
 
-    override val layoutId: Int
-        get() = R.layout.activity_login
-
-    override val viewDelegate: LoginViewDelegate by instance()
-
-    override fun initView() {
-        mBinding.delegate = viewDelegate
+    companion object {
+        private const val TAG = "LoginFragment"
     }
-
 
 }

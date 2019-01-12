@@ -17,19 +17,19 @@ const val LOGIN_MODULE_TAG = "LOGIN_MODULE_TAG"
 
 val loginKodeinModule = Kodein.Module(LOGIN_MODULE_TAG) {
 
-    bind<LoginNavigator>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
-        LoginNavigator(context)
+    bind<LoginNavigator>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
+        LoginNavigator(context.activity!!)
     }
 
-    bind<LoginViewModel>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
-        ViewModelProviders.of(context, LoginViewModelFactory(instance()))
+    bind<LoginViewModel>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
+        ViewModelProviders.of(context.activity!!, LoginViewModelFactory(instance()))
             .get(LoginViewModel::class.java)
             .apply {
                 addLifecycle(context)
             }
     }
 
-    bind<LoginViewDelegate>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
+    bind<LoginViewDelegate>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         LoginViewDelegate(
             viewModel = instance(),
             navigator = instance(),
@@ -37,15 +37,15 @@ val loginKodeinModule = Kodein.Module(LOGIN_MODULE_TAG) {
         )
     }
 
-    bind<LoginRemoteDataSource>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
+    bind<LoginRemoteDataSource>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         LoginRemoteDataSource(instance())
     }
 
-    bind<LoginLocalDataSource>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
+    bind<LoginLocalDataSource>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         LoginLocalDataSource(instance(), instance())
     }
 
-    bind<LoginDataSourceRepository>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
+    bind<LoginDataSourceRepository>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         LoginDataSourceRepository(instance(), instance())
     }
 

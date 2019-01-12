@@ -16,8 +16,8 @@ class LoginViewDelegate(
     loadingViewModel: CommonLoadingViewModel
 ) : BaseLoadingViewDelegate(loadingViewModel) {
 
-    override fun onCreate(lifecycleOwner: LifecycleOwner) {
-        super.onCreate(lifecycleOwner)
+
+    init {
         viewModel.userInfo
             .toFlowable()
             .doOnNext {
@@ -33,7 +33,6 @@ class LoginViewDelegate(
             }
             .bindLifecycle(viewModel)
             .subscribe()
-
     }
 
     fun login(v: View) = viewModel.login()

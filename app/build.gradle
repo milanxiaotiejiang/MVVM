@@ -8,7 +8,7 @@ android {
     compileSdkVersion config.compileSdkVersion
     buildToolsVersion config.buildToolsVersion
     defaultConfig {
-        applicationId "com.huaqing.property1"
+        applicationId "com.huaqing.property"
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
         versionCode 1
