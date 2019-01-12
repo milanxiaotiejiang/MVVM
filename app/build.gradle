@@ -8,7 +8,7 @@ android {
     compileSdkVersion config.compileSdkVersion
     buildToolsVersion config.buildToolsVersion
     defaultConfig {
-        applicationId "com.huaqing.property"
+        applicationId "com.huaqing.property1"
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
         versionCode 1
@@ -153,7 +153,6 @@ dependencies {
     // arrow
     implementation 'io.arrow-kt:arrow-core:0.7.3'
 
-    //
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.41'
 
     implementation 'com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1'
