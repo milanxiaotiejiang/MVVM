@@ -35,5 +35,6 @@ class LoginViewDelegate(
             .subscribe()
     }
 
-    fun login(v: View) = viewModel.login()
+
+    fun login() = viewModel.login()
 }

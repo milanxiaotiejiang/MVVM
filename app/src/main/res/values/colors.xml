@@ -10,4 +10,9 @@
     <color name="black">#ff000000</color>
     <color name="red">#ffff0000</color>
     <color name="transparent">#00000000</color>
+
+
+    <color name="primaryLightColor">#cfd8dc</color>
+    <color name="secondaryLightColor">#718792</color>
+
 </resources>

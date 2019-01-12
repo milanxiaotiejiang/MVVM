@@ -66,7 +66,9 @@ class LoginViewModel(
             .bindLifecycle(this)
             .subscribe { errorMsg ->
                 errorMsg.whenNotNull {
-                    toast { it }
+                    toast {
+                        it
+                    }
                 }
             }
 

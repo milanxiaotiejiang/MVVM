@@ -4,6 +4,9 @@
     <string name="tip_enter_telep_hone">请输入手机号</string>
     <string name="tip_enter_pass_word">请输入密码</string>
 
+    <string name="main_nav_home">Home</string>
+    <string name="main_nav_repos">Repos</string>
+    <string name="main_nav_profile">Me</string>
 
 
     <string name="common_loading_empty">it\'s empty here</string>

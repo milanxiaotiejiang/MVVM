@@ -111,7 +111,7 @@
                             android:id="@+id/signIn"
                             style="@style/buttonStyle"
                             android:text="@string/action_sign_in"
-                            android:onClick="@{ delegate.login }"
+                            app:bind_view_onClick="@{(v) -> delegate.login()}"
                     />
 
                 </LinearLayout>

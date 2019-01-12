@@ -1,9 +1,19 @@
 package com.huaqing.property.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import com.huaqing.property.R
+import com.huaqing.property.base.ui.BaseActivity
+import com.huaqing.property.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainActivityDelegate>() {
+    override val layoutId = R.layout.activity_main
+
+    override val viewDelegate = MainActivityDelegate()
+
+    override fun initView() {
+        mBinding.delegate = viewDelegate
+    }
+
     companion object {
 
         fun launch(activity: androidx.fragment.app.FragmentActivity) =
