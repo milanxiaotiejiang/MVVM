@@ -79,9 +79,9 @@
                                 android:id="@+id/telephone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/tip_enter_telep_hone"
+                                android:hint="@string/tip_enter_user_name"
                                 android:inputType="textEmailAddress"
-                                android:text="@={ delegate.viewModel.telephone }"
+                                android:text="@={ delegate.viewModel.username }"
                                 android:maxLines="1"
                                 android:singleLine="true"/>
 

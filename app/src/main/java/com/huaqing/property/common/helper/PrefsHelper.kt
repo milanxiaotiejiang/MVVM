@@ -8,7 +8,5 @@ class PrefsHelper(prefs: SharedPreferences) {
 
     var autoLogin by prefs.boolean("autoLogin", true)
 
-    var telephone by prefs.string("telephone", "")
-    var password by prefs.string("password", "")
     var token by prefs.string("token", "")
 }

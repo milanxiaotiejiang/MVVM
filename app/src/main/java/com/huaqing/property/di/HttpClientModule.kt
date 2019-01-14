@@ -2,6 +2,7 @@ package com.huaqing.property.di
 
 import com.google.gson.Gson
 import com.huaqing.property.common.Constants
+import com.huaqing.property.common.okhttp.TokenInterceptor
 import com.huaqing.property.utils.logger.loge
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit
 
 private const val HTTP_CLIENT_MODULE_TAG = "httpClientModule"
 const val HTTP_CLIENT_MODULE_INTERCEPTOR_LOG_TAG = "http_client_module_interceptor_log_tag"
+const val HTTP_CLIENT_MODULE_INTERCEPTOR_TOKEN_TAG = "http_client_module_interceptor_token_tag"
 
 const val TIME_OUT_SECONDS = 10
 
@@ -33,11 +35,11 @@ val httpClientModule = Kodein.Module(HTTP_CLIENT_MODULE_TAG) {
 
     bind<Retrofit>() with singleton {
         instance<Retrofit.Builder>()
-                .baseUrl(Constants.HOST_API)
-                .client(instance())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(Constants.HOST_API)
+            .client(instance())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     bind<Interceptor>(HTTP_CLIENT_MODULE_INTERCEPTOR_LOG_TAG) with singleton {
@@ -45,15 +47,20 @@ val httpClientModule = Kodein.Module(HTTP_CLIENT_MODULE_TAG) {
         HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
             loge { "RetrofitModule : $message" }
         })
-                .setLevel(HttpLoggingInterceptor.Level.BODY)
+            .setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
+    bind<Interceptor>(HTTP_CLIENT_MODULE_INTERCEPTOR_TOKEN_TAG) with singleton {
+        TokenInterceptor()
     }
 
     bind<OkHttpClient>() with singleton {
         instance<OkHttpClient.Builder>()
-                .connectTimeout(TIME_OUT_SECONDS.toLong(), TimeUnit.SECONDS)
-                .readTimeout(TIME_OUT_SECONDS.toLong(), TimeUnit.SECONDS)
-                .addInterceptor(instance(HTTP_CLIENT_MODULE_INTERCEPTOR_LOG_TAG))
-                .build()
+            .connectTimeout(TIME_OUT_SECONDS.toLong(), TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT_SECONDS.toLong(), TimeUnit.SECONDS)
+            .addInterceptor(instance(HTTP_CLIENT_MODULE_INTERCEPTOR_LOG_TAG))
+            .addInterceptor(instance(HTTP_CLIENT_MODULE_INTERCEPTOR_TOKEN_TAG))
+            .build()
     }
 
     bind<Gson>() with singleton { Gson() }

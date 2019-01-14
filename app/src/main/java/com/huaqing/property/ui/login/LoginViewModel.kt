@@ -8,6 +8,7 @@ import arrow.core.Either
 import arrow.core.Option
 import arrow.core.none
 import arrow.core.some
+import com.huaqing.property.R.id.telephone
 import com.huaqing.property.base.viewmodel.BaseViewModel
 import com.huaqing.property.base.viewstate.ViewState
 import com.huaqing.property.common.helper.RxSchedulers
@@ -18,6 +19,8 @@ import com.huaqing.property.ext.lifecycle.bindLifecycle
 import com.huaqing.property.ext.livedata.toFlowable
 import com.huaqing.property.http.globalHandleError
 import com.huaqing.property.model.Errors
+import com.huaqing.property.model.MyInfoBean
+import com.huaqing.property.utils.logger.log
 import com.huaqing.property.utils.toast
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -27,13 +30,15 @@ class LoginViewModel(
     private val repo: LoginDataSourceRepository
 ) : BaseViewModel() {
 
-    val telephone: MutableLiveData<String> = MutableLiveData()
+    val username: MutableLiveData<String> = MutableLiveData()
     val password: MutableLiveData<String> = MutableLiveData()
 
     val loadingLayout: MutableLiveData<CommonLoadingState> = MutableLiveData()
     val error: MutableLiveData<Option<Throwable>> = MutableLiveData()
 
     val userInfo: MutableLiveData<UserInfo> = MutableLiveData()
+
+    val requestMyInfo: MutableLiveData<Boolean> = MutableLiveData()
 
     private val autoLogin: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -48,6 +53,15 @@ class LoginViewModel(
             .bindLifecycle(this)
             .subscribe()
 
+        requestMyInfo.toFlowable()
+            .filter { it }
+            .doOnNext {
+                if (it) {
+                    myInfo()
+                }
+            }
+            .bindLifecycle(this)
+            .subscribe()
 
         error.toFlowable()
             .map { errorOpt ->
@@ -79,7 +93,7 @@ class LoginViewModel(
         Single.zip(
             repo.prefsUser().firstOrError(),
             repo.prefsAutoLogin(),
-            BiFunction { either: Either<Errors, UserInfo>, autoLogin: Boolean ->
+            BiFunction { either: Either<Errors, String>, autoLogin: Boolean ->
                 autoLogin to either
             })
             .bindLifecycle(this)
@@ -88,7 +102,7 @@ class LoginViewModel(
                     applyState(error = error.some())
                 }, { entity ->
                     applyState(
-                        telephone = entity.telephone.some() as Option<String>,
+                        username = entity.username.some() as Option<String>,
                         password = entity.password.some() as Option<String>,
                         autoLogin = pair.first
                     )
@@ -96,11 +110,11 @@ class LoginViewModel(
             }
 
     fun login() {
-        when (telephone.value.isNullOrEmpty() || password.value.isNullOrEmpty()) {
+        when (username.value.isNullOrEmpty() || password.value.isNullOrEmpty()) {
             true ->
                 toast { "请输入信息" }
             false -> repo
-                .login(telephone.value!!, password.value!!)
+                .login(username.value!!, password.value!!)
                 .compose(globalHandleError())
                 .map { either ->
                     either.fold({
@@ -130,7 +144,7 @@ class LoginViewModel(
                                 error = state.error.some()
                             )
                         }
-                        is ViewState.Result -> applyState(user = state.result.some())
+                        is ViewState.Result -> applyState(requestMyInfo = true)
                     }
                 }
         }
@@ -139,26 +153,78 @@ class LoginViewModel(
 
     private fun applyState(
         loadingLayout: CommonLoadingState = CommonLoadingState.IDLE,
-        user: Option<UserInfo> = none(),
         error: Option<Throwable> = none(),
-        telephone: Option<String> = none(),
+        username: Option<String> = none(),
         password: Option<String> = none(),
-        autoLogin: Boolean = false
+        autoLogin: Boolean = false,
+        requestMyInfo: Boolean = false
     ) {
         this.loadingLayout.postValue(loadingLayout)
         this.error.postValue(error)
 
-        this.userInfo.postValue(user.orNull())
-
-        telephone.whenNotNull {
-            this.telephone.value = it
+        username.whenNotNull {
+            this.username.value = it
         }
         password.whenNotNull {
             this.password.value = it
         }
 
         this.autoLogin.postValue(autoLogin)
+
+        this.requestMyInfo.postValue(requestMyInfo)
     }
+
+    fun myInfo() {
+//        repo.myInfo(this.username.value)
+//            .compose(globalHandleError())
+//            .map { either ->
+//                either.fold({
+//                    ViewState.error<MyInfoBean>(it)
+//                }, {
+//                    ViewState.result(it)
+//                })
+//            }
+//            .startWith(ViewState.loading())
+//            .startWith(ViewState.idle())
+//            .onErrorReturn {
+//                ViewState.error(it)
+//            }
+//            .observeOn(RxSchedulers.ui)
+//            .bindLifecycle(this)
+//            .subscribe { state ->
+//                when (state) {
+//                    is ViewState.Refreshing -> applyState(loadingLayout = CommonLoadingState.LOADING)
+//                    is ViewState.Idle -> applyState()
+//                    is ViewState.Error -> {
+//                        when (state.error) {
+//                            is Errors.Error ->
+//                                toast { state.error.errorMsg }
+//                        }
+//                        applyState(
+//                            loadingLayout = CommonLoadingState.ERROR,
+//                            error = state.error.some()
+//                        )
+//                    }
+//                    is ViewState.Result -> applyState(myInfo = state.result.some(), requestMyInfo = true)
+//                }
+//            }
+    }
+
+
+    private fun applyState(
+        loadingLayout: CommonLoadingState = CommonLoadingState.IDLE,
+        user: Option<UserInfo> = none(),
+        error: Option<Throwable> = none(),
+        requestMyInfo: Boolean = false
+    ) {
+        this.loadingLayout.postValue(loadingLayout)
+        this.error.postValue(error)
+
+        this.userInfo.postValue(user.orNull())
+
+        this.requestMyInfo.postValue(requestMyInfo)
+    }
+
 
 }
 

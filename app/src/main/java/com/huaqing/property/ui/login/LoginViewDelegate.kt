@@ -1,14 +1,10 @@
 package com.huaqing.property.ui.login
 
-import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import com.huaqing.property.base.viewdelegate.BaseLoadingViewDelegate
 import com.huaqing.property.common.loadings.CommonLoadingViewModel
-import com.huaqing.property.ext.autodispose.bindLifecycle
 import com.huaqing.property.ext.lifecycle.bindLifecycle
 import com.huaqing.property.ext.livedata.toFlowable
-import com.huaqing.property.utils.toast
-import io.reactivex.internal.operators.single.SingleInternalHelper.toFlowable
+import com.huaqing.property.utils.logger.log
 
 class LoginViewDelegate(
     val viewModel: LoginViewModel,
@@ -18,6 +14,7 @@ class LoginViewDelegate(
 
 
     init {
+
         viewModel.userInfo
             .toFlowable()
             .doOnNext {

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PropertyAndroid</string>
     <string name="action_sign_in">登 录</string>
-    <string name="tip_enter_telep_hone">请输入手机号</string>
+    <string name="tip_enter_user_name">请输入用户名</string>
     <string name="tip_enter_pass_word">请输入密码</string>
 
     <string name="main_nav_home">Home</string>
