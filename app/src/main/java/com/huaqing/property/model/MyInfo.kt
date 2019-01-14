@@ -1,10 +1,11 @@
 package com.huaqing.property.model
 
-import com.huaqing.property.base.bean.RespBean
-
-data class MyInfoBean(
+data class MyInfo(
+    var code: Int = 0,
+    var msg: String? = null,
+    var success: Boolean = false,
     val `data`: Data
-) : RespBean()
+)
 
 data class Data(
     val avatar: String,

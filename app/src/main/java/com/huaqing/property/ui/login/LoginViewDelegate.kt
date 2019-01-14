@@ -4,7 +4,6 @@ import com.huaqing.property.base.viewdelegate.BaseLoadingViewDelegate
 import com.huaqing.property.common.loadings.CommonLoadingViewModel
 import com.huaqing.property.ext.lifecycle.bindLifecycle
 import com.huaqing.property.ext.livedata.toFlowable
-import com.huaqing.property.utils.logger.log
 
 class LoginViewDelegate(
     val viewModel: LoginViewModel,

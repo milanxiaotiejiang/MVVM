@@ -1,5 +1,6 @@
 package com.huaqing.property.common.okhttp
 
+import com.huaqing.property.base.App
 import com.huaqing.property.common.Constants
 import com.huaqing.property.common.manager.UserManager
 import okhttp3.Interceptor
@@ -15,7 +16,7 @@ class TokenInterceptor : Interceptor {
             if (headers.contains("TOKEN")) {
                 val newBuilder = authorised.newBuilder()
                 newBuilder.removeHeader("TOKEN")
-                var accessToken = UserManager.INSTANCE.token
+                var accessToken = App.Companion.INSTANCE.prefs.token
                 if (accessToken != null) {
                     authorised = newBuilder
                         .header("Authorization", "Bearer " + accessToken)

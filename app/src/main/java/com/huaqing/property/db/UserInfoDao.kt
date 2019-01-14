@@ -12,7 +12,7 @@ import retrofit2.http.DELETE
 abstract class UserInfoDao {
 
     @Query("SELECT * FROM user_info WHERE id= :id")
-    abstract fun findDefaultUserInfo(id: Int): Flowable<UserInfo>
+    abstract fun findDefaultUserInfo(id: Int): Single<UserInfo>
 
     @Query("SELECT * FROM user_info")
     abstract fun findAll(): List<UserInfo>

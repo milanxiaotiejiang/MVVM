@@ -1,7 +1,6 @@
 package com.huaqing.property.ui.login
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
+import androidx.lifecycle.Transformations.map
 import arrow.core.Either
 import arrow.core.right
 import com.huaqing.property.base.repository.BaseRepositoryBoth
@@ -13,19 +12,15 @@ import com.huaqing.property.common.helper.RxSchedulers
 import com.huaqing.property.common.manager.UserManager
 import com.huaqing.property.db.AppDatabase
 import com.huaqing.property.db.UserInfo
+import com.huaqing.property.model.Data
 import com.huaqing.property.model.Errors
-import com.huaqing.property.model.MyInfoBean
-import com.huaqing.property.utils.logger.log
 import io.reactivex.Flowable
 import io.reactivex.Single
 
 class LoginDataSourceRepository(
-    remote: LoginLocalDataSource.ILoginRemoteDataSource,
-    local: LoginLocalDataSource.ILoginLocalDataSource
-) : BaseRepositoryBoth<LoginDataSourceRepository.ILoginRemoteDataSource, LoginDataSourceRepository.ILoginLocalDataSource>(
-    remote,
-    local
-) {
+    remote: ILoginRemoteDataSource,
+    local: ILoginLocalDataSource
+) : BaseRepositoryBoth<ILoginRemoteDataSource, ILoginLocalDataSource>(remote, local) {
 
     fun login(telephone: String, password: String): Flowable<Either<Errors, String>> =
         remoteDataSource.login(telephone, password)
@@ -33,10 +28,27 @@ class LoginDataSourceRepository(
                 either.fold({
 
                 }, {
-                    localDataSource.savePrefsUser(it)
+                    localDataSource.savePrefsToken(it)
                 })
             }
 
+    fun myInfo(): Flowable<Either<Errors, UserInfo>> {
+        return remoteDataSource.myInfo()
+            .doOnNext { either ->
+                either.fold({
+
+                }, {
+                    localDataSource.saveUserInfo(it)
+                })
+            }
+            .doOnNext { either ->
+                either.fold({
+
+                }, {
+                    UserManager.INSTANCE = it
+                })
+            }
+    }
 
     fun prefsUser(): Flowable<Either<Errors, String>> =
         localDataSource.fetchPrefsUser()
@@ -44,35 +56,27 @@ class LoginDataSourceRepository(
     fun prefsAutoLogin(): Single<Boolean> =
         localDataSource.isAutoLogin()
 
-    fun myInfo(username: String) {
-//        return remoteDataSource.myInfo()
-//            .doOnNext { either ->
-//                either.fold({
-//
-//                }, {
-//                    localDataSource.saveUserInfo(it, username)
-//                })
-//            }
-//            .doOnNext { either ->
-//                either.fold({
-//
-//                }, {
-//                    UserManager.INSTANCE = it
-//                })
-//            }
-        localDataSource.saveUserInfo()
-    }
-
+    fun findDefaultUserInfo(): Single<Either<Errors, UserInfo>> =
+        localDataSource.findDefaultUserInfo()
 }
 
 class LoginRemoteDataSource(private var remote: ApiService) : ILoginRemoteDataSource {
-    override fun myInfo(): Flowable<Either<Errors, MyInfoBean>> =
+    override fun myInfo(): Flowable<Either<Errors, UserInfo>> =
         remote.myInfo()
             .subscribeOn(RxSchedulers.io)
-            .map {
-                when (it.code) {
-                    200 -> Either.right(it)
-                    else -> Either.left(Errors.Error(it.code, it.msg!!))
+            .map { myInfo ->
+                when (myInfo.code) {
+                    200 -> {
+                        Either.right(
+                            UserInfo(
+                                1, myInfo.data.name, myInfo.data.password, myInfo.data.avatar,
+                                myInfo.data.department.id, myInfo.data.email, myInfo.data.gender, myInfo.data.id,
+                                myInfo.data.job.id, myInfo.data.mobile, myInfo.data.name, myInfo.data.salt,
+                                myInfo.data.status
+                            )
+                        )
+                    }
+                    else -> Either.left(Errors.Error(myInfo.code, myInfo.msg!!))
                 }
             }
 
@@ -89,80 +93,57 @@ class LoginRemoteDataSource(private var remote: ApiService) : ILoginRemoteDataSo
 
 class LoginLocalDataSource(private var local: AppDatabase, private val prefs: PrefsHelper) :
     ILoginLocalDataSource {
-    override fun saveUserInfo(myInfo: MyInfoBean, username: String) {
 
-        local.userInfoDao().findUserByUserName(username)
-            .doOnNext {
-                log {
-                    "" + it.size
-                }
-            }
-//
-//        val  = local.userInfoDao().findUserByUserName(username)
-//
-//        local.userInfoDao().findUserByUserName(username)
-//            .doOnNext {
-//                when (it == null) {
-//                    false -> {
-//                        var userInfo = UserInfo(
-//                            1, myInfo.data.username, myInfo.data.password, myInfo.data.avatar,
-//                            myInfo.data.department.id, myInfo.data.email, myInfo.data.gender, myInfo.data.id,
-//                            myInfo.data.job.id, myInfo.data.mobile, myInfo.data.name, myInfo.data.salt,
-//                            myInfo.data.status
-//                        )
-//                        Flowable.just(userInfo)
-//                    }
-//                    true -> {
-//                        local.userInfoDao().delete(it!!.id)
-//                        Flowable.just(it)
-//                    }
-//                }
-//            }
-//            .doOnNext {
-//                when (it != null) {
-//                    false ->
-//                        Flowable.just(Either.left(Errors.EmptyResultsError))
-//                    true -> {
-//                        local.userInfoDao().insert(it)
-//                        Flowable.just(Either.right(it))
-//                    }
-//                }
-//            }
+    override fun saveUserInfo(userInfo: UserInfo) {
+        local.userInfoDao().insert(userInfo)
     }
 
-    override fun savePrefsUser(token: String) {
+    override fun savePrefsToken(token: String) {
         prefs.token = token
     }
 
-    override fun findDefaultUserInfo() =
-        local.userInfoDao().findDefaultUserInfo(1)
+    override fun fetchPrefsUser(): Flowable<Either<Errors, String>> =
+        Flowable.just(prefs)
             .map {
-                when (it == null) {
+                when (it.token.isNotEmpty()) {
+                    false -> Either.left(Errors.EmptyResultsError)
+                    true -> Either.right(it.token)
+                }
+            }
+
+
+    override fun isAutoLogin(): Single<Boolean> =
+        Single.just(prefs.autoLogin)
+
+    override fun findDefaultUserInfo(): Single<Either<Errors, UserInfo>> =
+        local.userInfoDao().findDefaultUserInfo(1)
+            .subscribeOn(RxSchedulers.io)
+            .map {
+                when (it.id == 0) {
                     false ->
                         Either.left(Errors.EmptyResultsError)
                     true ->
                         Either.right(it)
                 }
             }
-
-    override fun isAutoLogin(): Single<Boolean> =
-        Single.just(prefs.autoLogin)
 }
 
 interface ILoginRemoteDataSource : IRemoteDataSource {
 
     fun login(telephone: String, password: String): Flowable<Either<Errors, String>>
 
-    fun myInfo(): Flowable<Either<Errors, MyInfoBean>>
+    fun myInfo(): Flowable<Either<Errors, UserInfo>>
 }
 
 interface ILoginLocalDataSource : ILocalDataSource {
 
-    fun savePrefsUser(token: String)
+    fun savePrefsToken(token: String)
 
-    fun findDefaultUserInfo()
+    fun fetchPrefsUser(): Flowable<Either<Errors, String>>
 
     fun isAutoLogin(): Single<Boolean>
 
-    fun saveUserInfo(myInfo: MyInfoBean, username: String)
+    fun findDefaultUserInfo(): Single<Either<Errors, UserInfo>>
+
+    fun saveUserInfo(userInfo: UserInfo)
 }

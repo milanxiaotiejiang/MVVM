@@ -8,7 +8,6 @@ import arrow.core.Either
 import arrow.core.Option
 import arrow.core.none
 import arrow.core.some
-import com.huaqing.property.R.id.telephone
 import com.huaqing.property.base.viewmodel.BaseViewModel
 import com.huaqing.property.base.viewstate.ViewState
 import com.huaqing.property.common.helper.RxSchedulers
@@ -19,8 +18,6 @@ import com.huaqing.property.ext.lifecycle.bindLifecycle
 import com.huaqing.property.ext.livedata.toFlowable
 import com.huaqing.property.http.globalHandleError
 import com.huaqing.property.model.Errors
-import com.huaqing.property.model.MyInfoBean
-import com.huaqing.property.utils.logger.log
 import com.huaqing.property.utils.toast
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -91,23 +88,25 @@ class LoginViewModel(
 
     private fun initAutoLogin() =
         Single.zip(
-            repo.prefsUser().firstOrError(),
+            repo.findDefaultUserInfo(),
             repo.prefsAutoLogin(),
-            BiFunction { either: Either<Errors, String>, autoLogin: Boolean ->
+            BiFunction { either: Either<Errors, UserInfo>, autoLogin: Boolean ->
                 autoLogin to either
             })
             .bindLifecycle(this)
-            .subscribe { pair ->
-                pair.second.fold({ error ->
-                    applyState(error = error.some())
-                }, { entity ->
+            .subscribe({ pair ->
+                pair.second.fold({
+                    applyState(error = it.some())
+                }, {
                     applyState(
-                        username = entity.username.some() as Option<String>,
-                        password = entity.password.some() as Option<String>,
+                        username = it.username.some() as Option<String>,
+                        password = it.password.some() as Option<String>,
                         autoLogin = pair.first
                     )
                 })
-            }
+            }, {
+                applyState(error = it.some())
+            })
 
     fun login() {
         when (username.value.isNullOrEmpty() || password.value.isNullOrEmpty()) {
@@ -175,39 +174,39 @@ class LoginViewModel(
     }
 
     fun myInfo() {
-//        repo.myInfo(this.username.value)
-//            .compose(globalHandleError())
-//            .map { either ->
-//                either.fold({
-//                    ViewState.error<MyInfoBean>(it)
-//                }, {
-//                    ViewState.result(it)
-//                })
-//            }
-//            .startWith(ViewState.loading())
-//            .startWith(ViewState.idle())
-//            .onErrorReturn {
-//                ViewState.error(it)
-//            }
-//            .observeOn(RxSchedulers.ui)
-//            .bindLifecycle(this)
-//            .subscribe { state ->
-//                when (state) {
-//                    is ViewState.Refreshing -> applyState(loadingLayout = CommonLoadingState.LOADING)
-//                    is ViewState.Idle -> applyState()
-//                    is ViewState.Error -> {
-//                        when (state.error) {
-//                            is Errors.Error ->
-//                                toast { state.error.errorMsg }
-//                        }
-//                        applyState(
-//                            loadingLayout = CommonLoadingState.ERROR,
-//                            error = state.error.some()
-//                        )
-//                    }
-//                    is ViewState.Result -> applyState(myInfo = state.result.some(), requestMyInfo = true)
-//                }
-//            }
+        repo.myInfo()
+            .compose(globalHandleError())
+            .map { either ->
+                either.fold({
+                    ViewState.error<UserInfo>(it)
+                }, {
+                    ViewState.result(it)
+                })
+            }
+            .startWith(ViewState.loading())
+            .startWith(ViewState.idle())
+            .onErrorReturn {
+                ViewState.error(it)
+            }
+            .observeOn(RxSchedulers.ui)
+            .bindLifecycle(this)
+            .subscribe { state ->
+                when (state) {
+                    is ViewState.Refreshing -> applyState(loadingLayout = CommonLoadingState.LOADING)
+                    is ViewState.Idle -> applyState()
+                    is ViewState.Error -> {
+                        when (state.error) {
+                            is Errors.Error ->
+                                toast { state.error.errorMsg }
+                        }
+                        applyState(
+                            loadingLayout = CommonLoadingState.ERROR,
+                            error = state.error.some()
+                        )
+                    }
+                    is ViewState.Result -> applyState(user = state.result.some(), requestMyInfo = true)
+                }
+            }
     }
 
 
