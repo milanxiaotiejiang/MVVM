@@ -96,16 +96,16 @@ class LoginViewModel(
             .bindLifecycle(this)
             .subscribe({ pair ->
                 pair.second.fold({
-                    applyState(error = it.some())
+                    applyStateLogin(error = it.some())
                 }, {
-                    applyState(
+                    applyStateLogin(
                         username = it.username.some() as Option<String>,
                         password = it.password.some() as Option<String>,
                         autoLogin = pair.first
                     )
                 })
             }, {
-                applyState(error = it.some())
+                applyStateLogin(error = it.some())
             })
 
     fun login() {
@@ -131,26 +131,28 @@ class LoginViewModel(
                 .bindLifecycle(this)
                 .subscribe { state ->
                     when (state) {
-                        is ViewState.Refreshing -> applyState(loadingLayout = CommonLoadingState.LOADING)
-                        is ViewState.Idle -> applyState()
+                        is ViewState.Refreshing -> applyStateLogin(loadingLayout = CommonLoadingState.LOADING)
+                        is ViewState.Idle -> applyStateLogin()
                         is ViewState.Error -> {
                             when (state.error) {
                                 is Errors.Error ->
-                                    toast { state.error.errorMsg }
+                                    toast {
+                                        state.error.errorMsg
+                                    }
                             }
-                            applyState(
+                            applyStateLogin(
                                 loadingLayout = CommonLoadingState.ERROR,
                                 error = state.error.some()
                             )
                         }
-                        is ViewState.Result -> applyState(requestMyInfo = true)
+                        is ViewState.Result -> applyStateLogin(requestMyInfo = true)
                     }
                 }
         }
 
     }
 
-    private fun applyState(
+    private fun applyStateLogin(
         loadingLayout: CommonLoadingState = CommonLoadingState.IDLE,
         error: Option<Throwable> = none(),
         username: Option<String> = none(),
@@ -192,25 +194,25 @@ class LoginViewModel(
             .bindLifecycle(this)
             .subscribe { state ->
                 when (state) {
-                    is ViewState.Refreshing -> applyState(loadingLayout = CommonLoadingState.LOADING)
-                    is ViewState.Idle -> applyState()
+                    is ViewState.Refreshing -> applyStateMyInfo(loadingLayout = CommonLoadingState.LOADING)
+                    is ViewState.Idle -> applyStateMyInfo()
                     is ViewState.Error -> {
                         when (state.error) {
                             is Errors.Error ->
                                 toast { state.error.errorMsg }
                         }
-                        applyState(
+                        applyStateMyInfo(
                             loadingLayout = CommonLoadingState.ERROR,
                             error = state.error.some()
                         )
                     }
-                    is ViewState.Result -> applyState(user = state.result.some(), requestMyInfo = true)
+                    is ViewState.Result -> applyStateMyInfo(user = state.result.some(), requestMyInfo = true)
                 }
             }
     }
 
 
-    private fun applyState(
+    private fun applyStateMyInfo(
         loadingLayout: CommonLoadingState = CommonLoadingState.IDLE,
         user: Option<UserInfo> = none(),
         error: Option<Throwable> = none(),

@@ -51,7 +51,7 @@ val httpClientModule = Kodein.Module(HTTP_CLIENT_MODULE_TAG) {
     }
 
     bind<Interceptor>(HTTP_CLIENT_MODULE_INTERCEPTOR_TOKEN_TAG) with singleton {
-        TokenInterceptor()
+        TokenInterceptor(instance())
     }
 
     bind<OkHttpClient>() with singleton {
