@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit
 
 class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewDelegate>() {
 
-    private val valueDuration: Long = 1300
-    private val wowDuration: Long = 1700
+    private val valueDuration: Long = 800
+    private val wowDuration: Long = 1200
 
 
     override val layoutId = R.layout.activity_splash
@@ -56,7 +56,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewDelegate>()
             })
         }
 
-        val duration = (valueDuration + wowDuration + 2000) / 1000
+        val duration = (valueDuration + wowDuration + 3000) / 1000
         mDisposable = Flowable.intervalRange(0, duration, 0, 1, TimeUnit.SECONDS)
             .subscribeOn(RxSchedulers.io)
             .observeOn(RxSchedulers.ui)

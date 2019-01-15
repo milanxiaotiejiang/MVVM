@@ -32,8 +32,8 @@ class LoginDataSourceRepository(
                 })
             }
 
-    fun myInfo(): Flowable<Either<Errors, UserInfo>> {
-        return remoteDataSource.myInfo()
+    fun myInfo(username: String, password: String): Flowable<Either<Errors, UserInfo>> {
+        return remoteDataSource.myInfo(username, password)
             .doOnNext { either ->
                 either.fold({
 
@@ -61,24 +61,6 @@ class LoginDataSourceRepository(
 }
 
 class LoginRemoteDataSource(private var remote: ApiService) : ILoginRemoteDataSource {
-    override fun myInfo(): Flowable<Either<Errors, UserInfo>> =
-        remote.myInfo()
-            .subscribeOn(RxSchedulers.io)
-            .map { myInfo ->
-                when (myInfo.code) {
-                    200 -> {
-                        Either.right(
-                            UserInfo(
-                                1, myInfo.data.name, myInfo.data.password, myInfo.data.avatar,
-                                myInfo.data.department.id, myInfo.data.email, myInfo.data.gender, myInfo.data.id,
-                                myInfo.data.job.id, myInfo.data.mobile, myInfo.data.name, myInfo.data.salt,
-                                myInfo.data.status
-                            )
-                        )
-                    }
-                    else -> Either.left(Errors.Error(myInfo.code, myInfo.msg!!))
-                }
-            }
 
     override fun login(telephone: String, password: String): Flowable<Either<Errors, String>> =
         remote.login(telephone, password)
@@ -89,6 +71,26 @@ class LoginRemoteDataSource(private var remote: ApiService) : ILoginRemoteDataSo
                     else -> Either.left(Errors.Error(it.code, it.msg!!))
                 }
             }
+
+    override fun myInfo(username: String, password: String): Flowable<Either<Errors, UserInfo>> =
+        remote.myInfo()
+            .subscribeOn(RxSchedulers.io)
+            .map { myInfo ->
+                when (myInfo.code) {
+                    200 -> {
+                        Either.right(
+                            UserInfo(
+                                1, username, password, myInfo.data.avatar,
+                                myInfo.data.department.id, myInfo.data.email, myInfo.data.gender, myInfo.data.id,
+                                myInfo.data.job.id, myInfo.data.mobile, myInfo.data.name, myInfo.data.salt,
+                                myInfo.data.status
+                            )
+                        )
+                    }
+                    else -> Either.left(Errors.Error(myInfo.code, myInfo.msg!!))
+                }
+            }
+
 }
 
 class LoginLocalDataSource(private var local: AppDatabase, private val prefs: PrefsHelper) :
@@ -119,12 +121,7 @@ class LoginLocalDataSource(private var local: AppDatabase, private val prefs: Pr
         local.userInfoDao().findDefaultUserInfo(1)
             .subscribeOn(RxSchedulers.io)
             .map {
-                when (it.id == 0) {
-                    false ->
-                        Either.left(Errors.EmptyResultsError)
-                    true ->
-                        Either.right(it)
-                }
+                Either.right(it)
             }
 }
 
@@ -132,7 +129,7 @@ interface ILoginRemoteDataSource : IRemoteDataSource {
 
     fun login(telephone: String, password: String): Flowable<Either<Errors, String>>
 
-    fun myInfo(): Flowable<Either<Errors, UserInfo>>
+    fun myInfo(username: String, password: String): Flowable<Either<Errors, UserInfo>>
 }
 
 interface ILoginLocalDataSource : ILocalDataSource {

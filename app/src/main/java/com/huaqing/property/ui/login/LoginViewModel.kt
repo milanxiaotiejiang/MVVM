@@ -54,6 +54,7 @@ class LoginViewModel(
             .filter { it }
             .doOnNext {
                 if (it) {
+                    this.requestMyInfo.postValue(!it)
                     myInfo()
                 }
             }
@@ -93,6 +94,7 @@ class LoginViewModel(
             BiFunction { either: Either<Errors, UserInfo>, autoLogin: Boolean ->
                 autoLogin to either
             })
+            .observeOn(RxSchedulers.ui)
             .bindLifecycle(this)
             .subscribe({ pair ->
                 pair.second.fold({
@@ -176,7 +178,7 @@ class LoginViewModel(
     }
 
     fun myInfo() {
-        repo.myInfo()
+        repo.myInfo(username.value!!, password.value!!)
             .compose(globalHandleError())
             .map { either ->
                 either.fold({
@@ -206,7 +208,7 @@ class LoginViewModel(
                             error = state.error.some()
                         )
                     }
-                    is ViewState.Result -> applyStateMyInfo(user = state.result.some(), requestMyInfo = true)
+                    is ViewState.Result -> applyStateMyInfo(user = state.result.some())
                 }
             }
     }
@@ -215,15 +217,12 @@ class LoginViewModel(
     private fun applyStateMyInfo(
         loadingLayout: CommonLoadingState = CommonLoadingState.IDLE,
         user: Option<UserInfo> = none(),
-        error: Option<Throwable> = none(),
-        requestMyInfo: Boolean = false
+        error: Option<Throwable> = none()
     ) {
         this.loadingLayout.postValue(loadingLayout)
         this.error.postValue(error)
 
         this.userInfo.postValue(user.orNull())
-
-        this.requestMyInfo.postValue(requestMyInfo)
     }
 
 
