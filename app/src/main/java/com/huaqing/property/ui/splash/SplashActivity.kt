@@ -74,9 +74,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             .subscribe()
     }
 
-    fun toLogin() {
-        LoginActivity.launch(this)
+    fun toLogin(v: View) {
+        toLogin()
     }
+
+    fun toLogin() = LoginActivity.launch(this)
 
     override fun onDestroy() {
         if (valueAnimator.isRunning) {

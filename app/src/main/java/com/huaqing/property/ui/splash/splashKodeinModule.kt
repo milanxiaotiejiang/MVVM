@@ -26,15 +26,15 @@ val splashKodeinModule = Kodein.Module(SPLASH_MODULE_TAG) {
             }
     }
 
-    bind<ImageView>() with scoped<Activity>(ActivityRetainedScope).singleton {
+    bind<ImageView>() with scoped<FragmentActivity>(ActivityRetainedScope).singleton {
         (context as SplashActivity).ivSplash
     }
 
-    bind<WowSplashView>() with scoped<Activity>(ActivityRetainedScope).singleton {
+    bind<WowSplashView>() with scoped<FragmentActivity>(ActivityRetainedScope).singleton {
         (context as SplashActivity).wowSplash
     }
 
-    bind<WowView>() with scoped<Activity>(ActivityRetainedScope).singleton {
+    bind<WowView>() with scoped<FragmentActivity>(ActivityRetainedScope).singleton {
         (context as SplashActivity).wowView
     }
 

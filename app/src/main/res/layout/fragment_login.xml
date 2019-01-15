@@ -111,7 +111,7 @@
                             android:id="@+id/signIn"
                             style="@style/buttonStyle"
                             android:text="@string/action_sign_in"
-                            app:bind_view_onClick="@{ () -> fragment.login() }"
+                            app:bind_view_onClick="@{(v) -> fragment.login()}"
                     />
 
                 </LinearLayout>
