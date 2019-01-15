@@ -11,11 +11,11 @@ import retrofit2.http.Query
 interface ApiService {
 
 
-    @POST("api-owner/sys/login")
+    @POST("api-company/sys/login")
     fun login(@Query("username") username: String, @Query("password") password: String): Flowable<Login>
 
     @Headers("H_NAME" + ":" + "TOKEN")
-    @GET("api-owner/sys/myInfo")
+    @GET("api-company/sys/myInfo")
     fun myInfo(): Flowable<MyInfo>
 
 }

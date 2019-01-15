@@ -11,4 +11,6 @@
 
     <string name="common_loading_empty">it\'s empty here</string>
     <string name="common_loading_error">network error</string>
+    <string name="click_skip">点击跳过</string>
+
 </resources>
