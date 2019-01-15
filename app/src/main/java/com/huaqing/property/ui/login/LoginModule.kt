@@ -2,6 +2,7 @@ package com.huaqing.property.ui.login
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.huaqing.property.common.loadings.CommonLoadingViewModel
 import com.huaqing.property.ext.viewmodel.addLifecycle
 import org.kodein.di.Kodein
 import org.kodein.di.android.x.AndroidLifecycleScope
@@ -20,6 +21,10 @@ val loginKodeinModule = Kodein.Module(LOGIN_MODULE_TAG) {
             .apply {
                 addLifecycle(context)
             }
+    }
+
+    bind<CommonLoadingViewModel>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
+        CommonLoadingViewModel.instance(context)
     }
 
     bind<LoginRemoteDataSource>() with scoped<Fragment>(AndroidLifecycleScope).singleton {

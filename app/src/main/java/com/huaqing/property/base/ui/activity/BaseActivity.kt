@@ -1,4 +1,4 @@
-package com.huaqing.property.base.ui
+package com.huaqing.property.base.ui.activity
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil

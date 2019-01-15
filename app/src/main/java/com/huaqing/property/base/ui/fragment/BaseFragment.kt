@@ -1,4 +1,4 @@
-package com.huaqing.property.base.ui
+package com.huaqing.property.base.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

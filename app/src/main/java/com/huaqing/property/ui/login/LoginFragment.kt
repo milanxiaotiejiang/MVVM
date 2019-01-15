@@ -1,6 +1,6 @@
 package com.huaqing.property.ui.login
 
-import com.huaqing.property.base.ui.BaseFragment
+import com.huaqing.property.base.ui.fragment.BaseFragment
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 import com.huaqing.property.R

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.huaqing.property.R
-import com.huaqing.property.base.ui.BaseFragment
+import com.huaqing.property.base.ui.fragment.BaseFragment
 import com.huaqing.property.databinding.FragmentMainBinding
 import com.huaqing.property.ui.main.home.HomeFragment
 import com.huaqing.property.ui.main.profile.ProfileFragment

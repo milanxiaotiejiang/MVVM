@@ -5,7 +5,7 @@ import android.view.View
 import com.bumptech.glide.request.transition.ViewPropertyTransition
 import com.huaqing.property.R
 import com.huaqing.property.base.glide.utils.loadImage
-import com.huaqing.property.base.ui.BaseActivity
+import com.huaqing.property.base.ui.activity.BaseActivity
 import com.huaqing.property.common.helper.RxSchedulers
 import com.huaqing.property.databinding.ActivitySplashBinding
 import com.huaqing.property.ext.autodispose.bindLifecycle
@@ -72,10 +72,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
             .bindLifecycle(this)
             .subscribe()
-    }
-
-    fun toLogin(v: View) {
-        toLogin()
     }
 
     fun toLogin() = LoginActivity.launch(this)

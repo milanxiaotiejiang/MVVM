@@ -2,7 +2,7 @@ package com.huaqing.property.ui
 
 import android.content.Intent
 import com.huaqing.property.R
-import com.huaqing.property.base.ui.BaseActivity
+import com.huaqing.property.base.ui.activity.BaseActivity
 import com.huaqing.property.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
