@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 def config = rootProject.ext.configs
@@ -25,6 +26,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -71,6 +73,11 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     sourceSets {
         androidTest.assets.srcDirs +=
                 files("$projectDir/schemas".toString())
@@ -81,6 +88,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
@@ -138,9 +146,9 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
 
     // autodispose
-    implementation 'com.uber.autodispose:autodispose-android:1.0.0'
-    implementation 'com.uber.autodispose:autodispose-android-ktx:1.0.0'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.0.0'
+    implementation 'com.uber.autodispose:autodispose-android:1.1.0'
+    implementation 'com.uber.autodispose:autodispose-android-ktx:1.1.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.1.0'
 
     // kodein
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.0.1'
@@ -165,4 +173,8 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.41'
 
     implementation 'com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1'
+
+    //ui
+    implementation 'com.cpacm:floatingmusicmenu:1.0.0'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }

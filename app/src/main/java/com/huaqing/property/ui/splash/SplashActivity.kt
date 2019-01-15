@@ -8,29 +8,31 @@ import com.huaqing.property.base.glide.utils.loadImage
 import com.huaqing.property.base.ui.BaseActivity
 import com.huaqing.property.common.helper.RxSchedulers
 import com.huaqing.property.databinding.ActivitySplashBinding
-import com.huaqing.property.ext.toast
+import com.huaqing.property.ext.autodispose.bindLifecycle
 import com.huaqing.property.ui.login.LoginActivity
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_splash.*
+import org.kodein.di.Kodein
 import java.util.concurrent.TimeUnit
 
-
-class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewDelegate>() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     private val valueDuration: Long = 800
     private val wowDuration: Long = 1200
 
+    override val kodein = Kodein.lazy {
+        extend(parentKodein)
+        import(splashKodeinModule)
+    }
 
     override val layoutId = R.layout.activity_splash
-
-    override val viewDelegate = SplashViewDelegate()
 
     var valueAnimator = ValueAnimator()
 
     var mDisposable: Disposable? = null
 
     override fun initView() {
-        mBinding.delegate = viewDelegate
 
         valueAnimator = ValueAnimator.ofFloat(0F, 1F)
 
@@ -39,19 +41,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewDelegate>()
         valueAnimator.addUpdateListener {
             val value = it.getAnimatedValue() as Float
 
-            mBinding.ivSplash.scaleX = ((0.5 + 0.5 * value).toFloat())
-            mBinding.ivSplash.scaleY = ((0.5 + 0.5 * value).toFloat())
-            mBinding.ivSplash.alpha = value
+            ivSplash.scaleX = ((0.5 + 0.5 * value).toFloat())
+            ivSplash.scaleY = ((0.5 + 0.5 * value).toFloat())
+            ivSplash.alpha = value
         }
 
-        mBinding.wowSplash.startAnimate(wowDuration)
-        mBinding.wowSplash.setOnEndListener {
+        wowSplash.startAnimate(wowDuration)
+        wowSplash.setOnEndListener {
 
-            mBinding.wowSplash.visibility = View.GONE
-            mBinding.wowView.visibility = View.VISIBLE
-            mBinding.wowView.startAnimate(mBinding.wowSplash.getDrawingCache())
+            wowSplash.visibility = View.GONE
+            wowView.visibility = View.VISIBLE
+            wowView.startAnimate(wowSplash.getDrawingCache())
 
-            loadImage(this@SplashActivity, mBinding.ivSplash, R.mipmap.splash_full, ViewPropertyTransition.Animator {
+            loadImage(this@SplashActivity, ivSplash, R.mipmap.splash_full, ViewPropertyTransition.Animator {
                 valueAnimator.start()
             })
         }
@@ -61,18 +63,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewDelegate>()
             .subscribeOn(RxSchedulers.io)
             .observeOn(RxSchedulers.ui)
             .doOnNext {
-                mBinding.skip.text =
+                skip.text =
                         "${this@SplashActivity.resources.getString(R.string.click_skip)} ${(duration - 1 - it)} s "
 
             }
             .doOnComplete {
                 toLogin()
             }
+            .bindLifecycle(this)
             .subscribe()
-
-        mBinding.skip.setOnClickListener {
-            toLogin()
-        }
     }
 
     fun toLogin() {

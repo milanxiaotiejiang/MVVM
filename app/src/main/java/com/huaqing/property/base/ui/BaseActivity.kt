@@ -3,9 +3,9 @@ package com.huaqing.property.base.ui
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.huaqing.property.base.viewdelegate.IViewDelegate
+import com.huaqing.property.BR
 
-abstract class BaseActivity<B : ViewDataBinding, VD : IViewDelegate> : BaseInjectActivity() {
+abstract class BaseActivity<B : ViewDataBinding> : BaseInjectActivity() {
 
     protected lateinit var mBinding: B
 
@@ -13,13 +13,18 @@ abstract class BaseActivity<B : ViewDataBinding, VD : IViewDelegate> : BaseInjec
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, layoutId)
         with(mBinding) {
+            setVariable(BR.activity, this@BaseActivity)
             setLifecycleOwner(this@BaseActivity)
         }
-        lifecycle.addObserver(viewDelegate)
         initView()
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding.unbind()
+    }
+
     abstract val layoutId: Int
-    abstract val viewDelegate: VD
     abstract fun initView()
 }

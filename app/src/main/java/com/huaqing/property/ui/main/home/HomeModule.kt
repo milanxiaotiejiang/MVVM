@@ -10,14 +10,9 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.scoped
 import org.kodein.di.generic.singleton
 
-
 const val HOME_MODULE_TAG = "HOME_MODULE_TAG"
 
 val homeKodeinModule = Kodein.Module(HOME_MODULE_TAG) {
-
-    bind<HomeNavigator>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
-        HomeNavigator()
-    }
 
     bind<HomeViewModel>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         ViewModelProviders.of(context.activity!!, HomeViewModelFactory(instance()))
@@ -25,10 +20,6 @@ val homeKodeinModule = Kodein.Module(HOME_MODULE_TAG) {
             .apply {
                 addLifecycle(context)
             }
-    }
-
-    bind<HomeViewDelegate>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
-        HomeViewDelegate(instance(), instance())
     }
 
     bind<HomeRemoteDataSource>() with scoped<Fragment>(AndroidLifecycleScope).singleton {

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-                name="delegate"
-                type="com.huaqing.property.ui.main.home.HomeViewDelegate"/>
+                name="fragment"
+                type="com.huaqing.property.ui.main.home.HomeFragment"/>
 
     </data>
 

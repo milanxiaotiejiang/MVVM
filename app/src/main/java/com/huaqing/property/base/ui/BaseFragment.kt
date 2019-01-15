@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.huaqing.property.base.viewdelegate.IViewDelegate
+import com.huaqing.property.BR
 
-abstract class BaseFragment<B : ViewDataBinding, VD : IViewDelegate> : BaseInjectFragment() {
+abstract class BaseFragment<B : ViewDataBinding> : BaseInjectFragment() {
 
-    private lateinit var mRootView: View
+    private var mRootView: View? = null
 
     protected lateinit var mBinding: B
 
@@ -23,13 +23,18 @@ abstract class BaseFragment<B : ViewDataBinding, VD : IViewDelegate> : BaseInjec
         super.onViewCreated(view, savedInstanceState)
         mBinding = DataBindingUtil.bind(view)!!
         with(mBinding) {
+            setVariable(BR.fragment, this@BaseFragment)
             setLifecycleOwner(this@BaseFragment)
         }
-        lifecycle.addObserver(viewDelegate)
         initView()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mRootView = null
+        mBinding.unbind()
+    }
+
     abstract val layoutId: Int
-    abstract val viewDelegate: VD
     abstract fun initView()
 }

@@ -5,13 +5,10 @@ import com.huaqing.property.R
 import com.huaqing.property.base.ui.BaseActivity
 import com.huaqing.property.databinding.ActivityMainBinding
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainActivityDelegate>() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
     override val layoutId = R.layout.activity_main
 
-    override val viewDelegate = MainActivityDelegate()
-
     override fun initView() {
-        mBinding.delegate = viewDelegate
     }
 
     companion object {

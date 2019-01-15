@@ -5,8 +5,8 @@
     <data>
 
         <variable
-                name="delegate"
-                type="com.huaqing.property.ui.MainActivityDelegate"/>
+                name="activity"
+                type="com.huaqing.property.ui.MainActivity"/>
 
     </data>
 

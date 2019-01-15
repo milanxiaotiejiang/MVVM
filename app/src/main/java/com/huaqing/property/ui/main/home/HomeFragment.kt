@@ -6,7 +6,7 @@ import com.huaqing.property.databinding.FragmentHomeBinding
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewDelegate>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override val kodein = Kodein.lazy {
         extend(parentKodein)
@@ -15,9 +15,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewDelegate>() {
 
     override val layoutId: Int = R.layout.fragment_home
 
-    override val viewDelegate: HomeViewDelegate by instance()
+    val homeViewModel: HomeViewModel by instance()
 
     override fun initView() {
-        mBinding.delegate = viewDelegate
+
     }
 }

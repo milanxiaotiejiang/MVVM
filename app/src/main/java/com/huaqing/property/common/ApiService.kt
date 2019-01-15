@@ -3,6 +3,7 @@ package com.huaqing.property.common
 import com.huaqing.property.model.Login
 import com.huaqing.property.model.MyInfo
 import io.reactivex.Flowable
+import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -17,5 +18,9 @@ interface ApiService {
     @Headers("H_NAME" + ":" + "TOKEN")
     @GET("api-company/sys/myInfo")
     fun myInfo(): Flowable<MyInfo>
+
+    @Headers("H_NAME" + ":" + "TOKEN")
+    @GET("/api-company/com/message/messageList")
+    fun messageList(): Flowable<ResponseBody>
 
 }

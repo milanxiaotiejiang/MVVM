@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <variable name="delegate"
-                  type="com.huaqing.property.ui.splash.SplashViewDelegate"/>
+        <variable name="activity"
+                  type="com.huaqing.property.ui.splash.SplashActivity"/>
 
     </data>
 
@@ -20,19 +20,19 @@
                 android:orientation="vertical">
 
             <ImageView
-                    android:id="@+id/iv_splash"
+                    android:id="@+id/ivSplash"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
             />
         </LinearLayout>
 
         <com.huaqing.property.view.WowSplashView
-                android:id="@+id/wow_splash"
+                android:id="@+id/wowSplash"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
         <com.huaqing.property.view.WowView
-                android:id="@+id/wow_view"
+                android:id="@+id/wowView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"/>
@@ -46,6 +46,7 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:bind_view_onClick="@{ () -> activity.login() }"
                 android:background="@drawable/button_frame_shape"
         />
     </RelativeLayout>
