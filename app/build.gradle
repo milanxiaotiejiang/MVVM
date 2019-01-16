@@ -147,6 +147,7 @@ dependencies {
 
     // autodispose
     implementation 'com.uber.autodispose:autodispose-android:1.1.0'
+    implementation 'com.uber.autodispose:autodispose-ktx:1.1.0'
     implementation 'com.uber.autodispose:autodispose-android-ktx:1.1.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.1.0'
 

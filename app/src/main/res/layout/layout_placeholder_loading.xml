@@ -6,11 +6,11 @@
 
         <import
                 alias="utils"
-                type="com.huaqing.property.common.loadings.LoadingController"/>
+                type="com.huaqing.property.common.viewmodel.loadings.LoadingController"/>
 
         <variable
                 name="delegate"
-                type="com.huaqing.property.common.loadings.ILoadingDelegate"/>
+                type="com.huaqing.property.common.viewmodel.loadings.ILoadingDelegate"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

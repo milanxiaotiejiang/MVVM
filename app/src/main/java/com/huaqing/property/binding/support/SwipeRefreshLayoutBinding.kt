@@ -10,8 +10,8 @@ object SwipeRefreshLayoutBinding {
     @JvmStatic
     @BindingAdapter("app:bind_swipeRefreshLayout_refreshing")
     fun setSwipeRefreshLayoutRefreshing(
-            swipeRefreshLayout: SwipeRefreshLayout,
-            newValue: Boolean
+        swipeRefreshLayout: SwipeRefreshLayout,
+        newValue: Boolean
     ) {
         if (swipeRefreshLayout.isRefreshing != newValue)
             swipeRefreshLayout.isRefreshing = newValue
@@ -19,20 +19,20 @@ object SwipeRefreshLayoutBinding {
 
     @JvmStatic
     @InverseBindingAdapter(
-            attribute = "app:bind_swipeRefreshLayout_refreshing",
-            event = "app:bind_swipeRefreshLayout_refreshingAttrChanged"
+        attribute = "app:bind_swipeRefreshLayout_refreshing",
+        event = "app:bind_swipeRefreshLayout_refreshingAttrChanged"
     )
     fun isSwipeRefreshLayoutRefreshing(swipeRefreshLayout: SwipeRefreshLayout): Boolean =
-            swipeRefreshLayout.isRefreshing
+        swipeRefreshLayout.isRefreshing
 
     @JvmStatic
     @BindingAdapter(
-            "app:bind_swipeRefreshLayout_refreshingAttrChanged",
-            requireAll = false
+        "app:bind_swipeRefreshLayout_refreshingAttrChanged",
+        requireAll = false
     )
     fun setOnRefreshListener(
-            swipeRefreshLayout: SwipeRefreshLayout,
-            bindingListener: InverseBindingListener?
+        swipeRefreshLayout: SwipeRefreshLayout,
+        bindingListener: InverseBindingListener?
     ) {
         if (bindingListener != null)
             swipeRefreshLayout.setOnRefreshListener {

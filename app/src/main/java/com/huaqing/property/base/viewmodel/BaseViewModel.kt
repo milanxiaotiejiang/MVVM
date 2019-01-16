@@ -1,3 +1,3 @@
 package com.huaqing.property.base.viewmodel
 
-open class BaseViewModel : LifecycleViewModel()
+open class BaseViewModel : AutoDisposeViewModel()

@@ -1,14 +1,14 @@
 package com.huaqing.property.ui.login
 
+import com.huaqing.property.R
 import com.huaqing.property.base.ui.fragment.BaseFragment
+import com.huaqing.property.common.viewmodel.loadings.CommonLoadingViewModel
+import com.huaqing.property.databinding.FragmentLoginBinding
+import com.huaqing.property.ext.livedata.toReactiveStream
+import com.huaqing.property.ui.MainActivity
+import com.uber.autodispose.autoDisposable
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
-import com.huaqing.property.R
-import com.huaqing.property.common.loadings.CommonLoadingViewModel
-import com.huaqing.property.databinding.FragmentLoginBinding
-import com.huaqing.property.ext.lifecycle.bindLifecycle
-import com.huaqing.property.ext.livedata.toFlowable
-import com.huaqing.property.ui.MainActivity
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
@@ -27,19 +27,19 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun initView() {
 
         viewModel.userInfo
-            .toFlowable()
+            .toReactiveStream()
             .doOnNext {
                 toMain()
             }
-            .bindLifecycle(viewModel)
+            .autoDisposable(scopeProvider)
             .subscribe()
 
         viewModel.loadingLayout
-            .toFlowable()
+            .toReactiveStream()
             .doOnNext {
                 loadingViewModel.applyState(it)
             }
-            .bindLifecycle(viewModel)
+            .autoDisposable(scopeProvider)
             .subscribe()
     }
 

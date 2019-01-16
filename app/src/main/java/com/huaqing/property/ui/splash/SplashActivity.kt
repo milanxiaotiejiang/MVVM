@@ -8,8 +8,8 @@ import com.huaqing.property.base.glide.utils.loadImage
 import com.huaqing.property.base.ui.activity.BaseActivity
 import com.huaqing.property.common.helper.RxSchedulers
 import com.huaqing.property.databinding.ActivitySplashBinding
-import com.huaqing.property.ext.autodispose.bindLifecycle
 import com.huaqing.property.ui.login.LoginActivity
+import com.uber.autodispose.autoDisposable
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -70,7 +70,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             .doOnComplete {
                 toLogin()
             }
-            .bindLifecycle(this)
+            .autoDisposable(scopeProvider)
             .subscribe()
     }
 

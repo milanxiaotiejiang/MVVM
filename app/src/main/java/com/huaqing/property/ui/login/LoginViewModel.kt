@@ -1,9 +1,10 @@
 package com.huaqing.property.ui.login
 
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import arrow.core.Either
 import arrow.core.Option
 import arrow.core.none
@@ -11,14 +12,17 @@ import arrow.core.some
 import com.huaqing.property.base.viewmodel.BaseViewModel
 import com.huaqing.property.base.viewstate.ViewState
 import com.huaqing.property.common.helper.RxSchedulers
-import com.huaqing.property.common.loadings.CommonLoadingState
+import com.huaqing.property.common.viewmodel.loadings.CommonLoadingState
 import com.huaqing.property.db.UserInfo
 import com.huaqing.property.ext.arrow.whenNotNull
-import com.huaqing.property.ext.lifecycle.bindLifecycle
-import com.huaqing.property.ext.livedata.toFlowable
+import com.huaqing.property.ext.livedata.map
+import com.huaqing.property.ext.livedata.toReactiveStream
 import com.huaqing.property.http.globalHandleError
 import com.huaqing.property.model.Errors
+import com.huaqing.property.utils.logger.log
 import com.huaqing.property.utils.toast
+import com.uber.autodispose.autoDisposable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import retrofit2.HttpException
@@ -39,18 +43,18 @@ class LoginViewModel(
 
     private val autoLogin: MutableLiveData<Boolean> = MutableLiveData()
 
-    override fun onCreate(lifecycleOwner: LifecycleOwner) {
-        super.onCreate(lifecycleOwner)
-
-        autoLogin.toFlowable()
+    init {
+        autoLogin
+            .toReactiveStream()
             .filter { it }
             .doOnNext {
                 login()
             }
-            .bindLifecycle(this)
+            .autoDisposable(this)
             .subscribe()
 
-        requestMyInfo.toFlowable()
+        requestMyInfo
+            .toReactiveStream()
             .filter { it }
             .doOnNext {
                 if (it) {
@@ -58,10 +62,15 @@ class LoginViewModel(
                     myInfo()
                 }
             }
-            .bindLifecycle(this)
+            .autoDisposable(this)
             .subscribe()
 
-        error.toFlowable()
+        error
+            .map {
+                log { "error " + it }
+                it
+            }
+            .toReactiveStream()
             .map { errorOpt ->
                 errorOpt.flatMap {
                     when (it) {
@@ -75,7 +84,7 @@ class LoginViewModel(
                     }
                 }
             }
-            .bindLifecycle(this)
+            .autoDisposable(this)
             .subscribe { errorMsg ->
                 errorMsg.whenNotNull {
                     toast {
@@ -95,7 +104,7 @@ class LoginViewModel(
                 autoLogin to either
             })
             .observeOn(RxSchedulers.ui)
-            .bindLifecycle(this)
+            .autoDisposable(this)
             .subscribe({ pair ->
                 pair.second.fold({
                     applyStateLogin(error = it.some())
@@ -130,7 +139,7 @@ class LoginViewModel(
                     ViewState.error(it)
                 }
                 .observeOn(RxSchedulers.ui)
-                .bindLifecycle(this)
+                .autoDisposable(this)
                 .subscribe { state ->
                     when (state) {
                         is ViewState.Refreshing -> applyStateLogin(loadingLayout = CommonLoadingState.LOADING)
@@ -193,7 +202,7 @@ class LoginViewModel(
                 ViewState.error(it)
             }
             .observeOn(RxSchedulers.ui)
-            .bindLifecycle(this)
+            .autoDisposable(this)
             .subscribe { state ->
                 when (state) {
                     is ViewState.Refreshing -> applyStateMyInfo(loadingLayout = CommonLoadingState.LOADING)
@@ -225,6 +234,12 @@ class LoginViewModel(
         this.userInfo.postValue(user.orNull())
     }
 
+    companion object {
+        fun instance(fragment: Fragment, repo: LoginDataSourceRepository): LoginViewModel =
+            ViewModelProviders
+                .of(fragment, LoginViewModelFactory(repo))
+                .get(LoginViewModel::class.java)
+    }
 
 }
 

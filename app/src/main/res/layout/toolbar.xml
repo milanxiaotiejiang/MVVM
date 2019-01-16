@@ -2,7 +2,9 @@
 <layout>
 
     <data>
-
+        <variable
+                name="delegate"
+                type="com.huaqing.property.common.viewmodel.toolbar.ToolbarViewModel" />
     </data>
 
     <androidx.appcompat.widget.Toolbar
@@ -25,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
+                android:text="@={ delegate.toolbarName }"
                 android:textAppearance="@style/Toolbar.TitleText"
                 android:textColor="@android:color/white"/>
 

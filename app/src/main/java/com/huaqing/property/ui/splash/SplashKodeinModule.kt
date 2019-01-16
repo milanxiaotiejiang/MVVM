@@ -1,10 +1,7 @@
 package com.huaqing.property.ui.splash
 
-import android.app.Activity
 import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
-import com.huaqing.property.ext.viewmodel.addLifecycle
 import com.huaqing.property.view.WowSplashView
 import com.huaqing.property.view.WowView
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -19,11 +16,7 @@ const val SPLASH_MODULE_TAG = "SPLASH_MODULE_TAG"
 val splashKodeinModule = Kodein.Module(SPLASH_MODULE_TAG) {
 
     bind<SplashViewModel>() with scoped<FragmentActivity>(ActivityRetainedScope).singleton {
-        ViewModelProviders.of(context, SplashViewModelFactory())
-            .get(SplashViewModel::class.java)
-            .apply {
-                addLifecycle(context)
-            }
+        SplashViewModel.instance(activity = context)
     }
 
     bind<ImageView>() with scoped<FragmentActivity>(ActivityRetainedScope).singleton {

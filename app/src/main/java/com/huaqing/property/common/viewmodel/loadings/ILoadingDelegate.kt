@@ -1,4 +1,4 @@
-package com.huaqing.property.common.loadings
+package com.huaqing.property.common.viewmodel.loadings
 
 import androidx.lifecycle.MutableLiveData
 
