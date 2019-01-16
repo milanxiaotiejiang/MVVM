@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
                 name="delegate"
-                type="com.huaqing.property.common.viewmodel.toolbar.ToolbarViewModel" />
+                type="com.huaqing.property.common.viewmodel.toolbar.ToolbarViewModel"/>
     </data>
 
+    <!--<com.google.android.material.appbar.AppBarLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:fitsSystemWindows="true">-->
+
+    <!--<com.google.android.material.appbar.CollapsingToolbarLayout-->
+    <!--android:id="@+id/collapsing_toolbar_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:contentScrim="?attr/colorPrimary"-->
+    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+    <!--app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"-->
+    <!--android:fitsSystemWindows="true">-->
+
     <androidx.appcompat.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/tool_bar"
             style="@style/Toolbar.MyStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="true"
-            android:fitsSystemWindows="true"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:titleTextColor="@android:color/white">
 
@@ -31,7 +43,11 @@
                 android:textAppearance="@style/Toolbar.TitleText"
                 android:textColor="@android:color/white"/>
 
-
     </androidx.appcompat.widget.Toolbar>
+
+
+    <!--</com.google.android.material.appbar.CollapsingToolbarLayout>-->
+
+    <!--</com.google.android.material.appbar.AppBarLayout>-->
 
 </layout>

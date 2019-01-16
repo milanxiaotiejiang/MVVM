@@ -44,4 +44,8 @@
         <attr name="bind_tabLayout_onTabUnselected" format="reference"/>
         <attr name="bind_tabLayout_onTabReselected" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="AppBarLayout">
+        <attr name="bind_appBarLayout_addOnOffsetChanged" format="reference"/>
+    </declare-styleable>
 </resources>

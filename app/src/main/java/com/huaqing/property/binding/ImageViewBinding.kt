@@ -7,8 +7,8 @@ import com.huaqing.property.base.glide.GlideApp
 import com.huaqing.property.base.glide.utils.loadImage
 
 @BindingAdapter("bind_imageView_url")
-fun loadImageUrl(imageView: ImageView, url: String?) {
-    loadImage(imageView.context, imageView, url!!)
+fun loadImageUrl(imageView: ImageView, model: Any?) {
+    loadImage(imageView.context, imageView, model!!)
 }
 
 @BindingAdapter("bind_imageView_url_circle")
