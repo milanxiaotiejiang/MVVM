@@ -36,28 +36,17 @@
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        app:bind_view_visibility="@{ !fragment.single }"
                         android:scaleType="centerCrop"
                         app:bind_imageView_url="@{ fragment.viewModel.toolbarUrl }"
                         app:layout_collapseMode="parallax"
+                        app:layout_collapseParallaxMultiplier="0.7"
                         android:fitsSystemWindows="true"/>
-
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/status_gradient"
-                        app:layout_collapseMode="pin"
-                        android:fitsSystemWindows="true"/>
-
-                <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:layout_collapseMode="pin"
-                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        app:bind_view_visibility="@{ !fragment.single }"
                         app:layout_collapseMode="pin">
 
                     <ImageView
@@ -74,24 +63,51 @@
                             tools:src="@mipmap/ic_launcher_round"/>
 
                     <TextView
-                            android:id="@+id/tvNickname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="80dp"
                             android:layout_marginTop="6dp"
-                            android:layout_marginEnd="80dp"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="撒大大大"
+                            android:text="图片"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/ivAvatar"
-                            tools:text="qingmei2"/>
+                            app:layout_constraintTop_toBottomOf="@+id/ivAvatar"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/status_gradient"
+                        app:layout_collapseMode="pin"
+                        android:fitsSystemWindows="true"/>
+
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                    <RelativeLayout
+                            app:bind_view_visibility="@{ fragment.single }"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <TextView
+                                android:id="@+id/tvToolbar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toolbar_tv_profile"
+                                android:layout_centerInParent="true"
+                                android:textAppearance="@style/Toolbar.TitleText"
+                                android:textColor="@android:color/white"/>
+
+                    </RelativeLayout>
+                </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

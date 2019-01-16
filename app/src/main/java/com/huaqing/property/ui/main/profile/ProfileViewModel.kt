@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import com.huaqing.property.R
 import com.huaqing.property.base.viewmodel.BaseViewModel
+import com.huaqing.property.db.UserInfo
 import com.huaqing.property.ext.livedata.toReactiveStream
 import com.huaqing.property.model.Login
 import com.huaqing.property.utils.logger.loge

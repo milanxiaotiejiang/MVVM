@@ -8,6 +8,7 @@
     <string name="main_nav_repos">通讯录</string>
     <string name="main_nav_profile">工作区</string>
 
+    <string name="toolbar_tv_profile">物业管理</string>
 
     <string name="common_loading_empty">it\'s empty here</string>
     <string name="common_loading_error">network error</string>
