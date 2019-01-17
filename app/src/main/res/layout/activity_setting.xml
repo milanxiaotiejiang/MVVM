@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+
+        <variable
+                name="activity"
+                type="com.huaqing.property.ui.setting.SettingActivity"/>
+
+    </data>
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <include
+                app:delegate="@{ activity.toolbarViewModel }"
+                layout="@layout/toolbar"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                app:bind_view_onClick="@{() -> activity.about()}"
+                android:background="@color/white">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_users"
+                    android:id="@+id/imageView"/>
+            <TextView
+                    android:id="@+id/about"
+                    android:text="@string/about_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    android:layout_marginStart="18dp"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <Button
+                android:id="@+id/logout"
+                style="@style/buttonStyle"
+                android:text="@string/logout"
+                app:bind_view_onClick="@{() -> activity.viewModel.logout()}"/>
+
+    </LinearLayout>
+
+</layout>

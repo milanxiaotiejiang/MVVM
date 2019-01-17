@@ -12,6 +12,7 @@ import com.huaqing.property.ext.livedata.toReactiveStream
 import com.huaqing.property.ext.paging.Paging
 import com.huaqing.property.model.Login
 import com.uber.autodispose.autoDisposable
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import org.kodein.di.generic.instance
 
@@ -24,10 +25,14 @@ class HomeViewModel(
     val pagedList = MutableLiveData<PagedList<Login>>()
 
     init {
-        refreshing.toReactiveStream()
-            .filter { it }
-            .startWith(true)
-            .doOnNext { initReceivedEvents() }
+        Completable
+            .mergeArray(
+                refreshing.toReactiveStream()
+                    .filter { it }
+                    .startWith(true)
+                    .doOnNext { initReceivedEvents() }
+                    .ignoreElements()
+            )
             .autoDisposable(this)
             .subscribe()
     }

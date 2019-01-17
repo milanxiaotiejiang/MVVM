@@ -126,16 +126,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         app:bind_recyclerView_adapter="@{ fragment.adapter }"
                         app:bind_recyclerView_scrollStateChanges="@{ fragment.fabViewModel.stateChangesConsumer }"
                         app:bind_recyclerView_scrollStateChanges_debounce="@{ 500 }"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:spanCount="4"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:listitem="@layout/item_profile_layout"/>
 
                 <include
@@ -148,6 +144,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:visibility="gone"/>
+
+                />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

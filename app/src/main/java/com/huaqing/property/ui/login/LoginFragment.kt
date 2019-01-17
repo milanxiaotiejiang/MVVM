@@ -6,7 +6,9 @@ import com.huaqing.property.common.viewmodel.loadings.CommonLoadingViewModel
 import com.huaqing.property.databinding.FragmentLoginBinding
 import com.huaqing.property.ext.livedata.toReactiveStream
 import com.huaqing.property.ui.MainActivity
+import com.uber.autodispose.AutoDispose.autoDisposable
 import com.uber.autodispose.autoDisposable
+import io.reactivex.Completable
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 
@@ -25,21 +27,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val layoutId = R.layout.fragment_login
 
     override fun initView() {
+        Completable
+            .mergeArray(
+                viewModel.userInfo
+                    .toReactiveStream()
+                    .doOnNext {
+                        toMain()
+                    }
+                    .ignoreElements(),
 
-        viewModel.userInfo
-            .toReactiveStream()
-            .doOnNext {
-                toMain()
-            }
-            .autoDisposable(scopeProvider)
-            .subscribe()
-
-        viewModel.loadingLayout
-            .toReactiveStream()
-            .doOnNext {
-                loadingViewModel.applyState(it)
-            }
-            .autoDisposable(scopeProvider)
+                viewModel.loadingLayout
+                    .toReactiveStream()
+                    .doOnNext {
+                        loadingViewModel.applyState(it)
+                    }
+                    .ignoreElements()
+            )
+            .autoDisposable(viewModel)
             .subscribe()
     }
 

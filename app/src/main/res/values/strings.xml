@@ -26,4 +26,6 @@
     <string name="pro_security_patrol">安保巡检</string>
     <string name="pro_cleaning_sanitation">保洁环卫</string>
     <string name="pro_set_up">设置</string>
+    <string name="about_us">关于我们</string>
+    <string name="logout">退出登录</string>
 </resources>

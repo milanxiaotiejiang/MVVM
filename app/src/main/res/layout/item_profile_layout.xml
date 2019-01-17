@@ -12,6 +12,9 @@
                 name="data"
                 type="com.huaqing.property.model.Profile"/>
 
+        <variable
+                name="proEvent"
+                type="com.huaqing.property.common.functional.Consumer" />
     </data>
 
     <LinearLayout
@@ -21,7 +24,8 @@
             android:gravity="center"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            app:bind_view_onClick="@{ () -> proEvent.accept(data.titleRes) }">
 
         <ImageView
                 android:id="@+id/ivAvatar"

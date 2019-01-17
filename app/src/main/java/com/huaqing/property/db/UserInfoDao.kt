@@ -23,4 +23,7 @@ abstract class UserInfoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(userInfo: UserInfo)
 
+    @Delete
+    abstract fun delete(userInfo: UserInfo)
+
 }

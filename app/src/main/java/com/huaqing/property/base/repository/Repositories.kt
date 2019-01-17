@@ -6,7 +6,7 @@ open class BaseRepositoryBoth<T : IRemoteDataSource, R : ILocalDataSource>(
 ) : IRepository
 
 open class BaseRepositoryLocal<T : ILocalDataSource>(
-    val remoteDataSource: T
+    val localDataSource: T
 ) : IRepository
 
 open class BaseRepositoryRemote<T : IRemoteDataSource>(
