@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+                alias="utils"
+                type="com.huaqing.property.ui.main.profile.ProfileUtils"/>
+
+        <variable
+                name="data"
+                type="com.huaqing.property.model.Profile"/>
+
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:background="@color/white">
+
+        <ImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="fitCenter"
+                app:bind_imageView_url="@{ data.imageRes }"
+                tools:ignore="ContentDescription"
+                tools:src="@mipmap/ic_launcher"/>
+
+        <TextView
+                android:id="@+id/tvEventContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:maxLines="1"
+                android:text="@{ utils.proIdToString(data.titleRes) }"
+                android:textSize="12sp"
+                tools:text="Anyone"/>
+
+    </LinearLayout>
+
+</layout>

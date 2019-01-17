@@ -11,11 +11,11 @@ data class UserInfo(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int = 0,
+    val id: Int = 0,
     @ColumnInfo(name = "username")
-    var username: String? = null,
+    val username: String? = null,
     @ColumnInfo(name = "password")
-    var password: String? = null,
+    val password: String? = null,
 
     @ColumnInfo(name = "avatar")
     val avatar: String,
