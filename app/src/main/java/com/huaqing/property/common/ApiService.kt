@@ -2,6 +2,7 @@ package com.huaqing.property.common
 
 import com.huaqing.property.model.Address
 import com.huaqing.property.model.Login
+import com.huaqing.property.model.Meaasge
 import com.huaqing.property.model.MyInfo
 import io.reactivex.Flowable
 import okhttp3.ResponseBody
@@ -22,7 +23,7 @@ interface ApiService {
 
     @Headers("H_NAME" + ":" + "TOKEN")
     @GET("/api-company/com/message/messageList")
-    fun messageList(): Flowable<ResponseBody>
+    fun messageList(): Flowable<Meaasge>
 
     @Headers("H_NAME" + ":" + "TOKEN")
     @GET("/api-company/com/companyInfo/addressList")

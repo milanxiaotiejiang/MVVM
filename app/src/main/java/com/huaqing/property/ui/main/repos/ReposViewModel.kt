@@ -95,27 +95,6 @@ class ReposViewModel(
         this.events.postValue(events.orNull())
     }
 
-//    var adapter: BaseDataBindingAdapter<InfoData, ItemAddressLayoutBinding> =
-//        BaseDataBindingAdapter(
-//            layoutId = R.layout.item_address_layout,
-//            dataSource = {
-//                events.value
-//            } as () -> List<InfoData>,
-//            bindBinding = {
-//                ItemAddressLayoutBinding.bind(it)
-//            },
-//            callback = { data, binding, _ ->
-//                binding.data = data
-//                binding.addressEvent = object : Consumer<Int> {
-//                    override fun accept(t: Int) {
-//                        when (t) {
-//                        }
-//                    }
-//
-//                }
-//            }
-//        )
-
     companion object {
         fun instance(fragment: Fragment, repo: ReposDataSourceRepository): ReposViewModel =
             ViewModelProviders

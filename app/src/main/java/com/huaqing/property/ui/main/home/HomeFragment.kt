@@ -21,6 +21,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun initView() {
 
-        toolbarViewModel.toolbarName.postValue("home")
+        toolbarViewModel.toolbarName.postValue("消息")
     }
 }
