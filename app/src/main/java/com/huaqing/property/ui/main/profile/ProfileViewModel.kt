@@ -27,12 +27,13 @@ class ProfileViewModel(
     val toolbarUrl: MutableLiveData<Int> = MutableLiveData()
 
     val user: MutableLiveData<UserInfo> = MutableLiveData()
-    val avatar: MutableLiveData<String> = MutableLiveData()
+    val avatar: MutableLiveData<Any> = MutableLiveData()
     val name: MutableLiveData<String> = MutableLiveData()
 
     init {
         this.toolbarUrl.value = R.mipmap.darkbg
 
+        avatar.postValue(R.drawable.head)
         applyState(user = UserManager.INSTANCE.toOption())
     }
 

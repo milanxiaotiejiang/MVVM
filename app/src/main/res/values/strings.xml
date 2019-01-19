@@ -28,4 +28,6 @@
     <string name="pro_set_up">设置</string>
     <string name="about_us">关于我们</string>
     <string name="logout">退出登录</string>
+    <string name="no_photo">暂无电话</string>
+    <string name="mobile_phone_number_incorrect">手机号格式不正确！</string>
 </resources>

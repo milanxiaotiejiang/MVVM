@@ -30,11 +30,27 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                <!--<androidx.recyclerview.widget.RecyclerView-->
+                <!--android:id="@+id/recyclerView"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="0dp"-->
+                <!--app:bind_recyclerView_adapter="@{ fragment.viewModel.adapter }"-->
+                <!--app:bind_recyclerView_scrollStateChanges="@{ fragment.fabViewModel.stateChangesConsumer }"-->
+                <!--app:bind_recyclerView_scrollStateChanges_debounce="@{ 500 }"-->
+                <!--app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"/>-->
+
+                <me.yokeyword.indexablerv.IndexableLayout
+                        android:id="@+id/indexableLayout"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:indexBar_background="#08000000"
+                        app:indexBar_layout_width="32dp"
+                        app:indexBar_textColor="@android:color/black"
+                        app:indexBar_textSpace="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

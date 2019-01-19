@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+                name="data"
+                type="String"/>
+
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/tv_index"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#F1F1F1"
+              android:paddingLeft="16dp"
+              android:paddingTop="10dp"
+              android:text="@{ data }"
+              android:paddingBottom="10dp"
+              android:textColor="@color/colorAccent"
+              android:textSize="10dp"/>
+</layout>

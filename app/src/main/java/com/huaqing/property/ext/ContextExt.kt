@@ -11,3 +11,11 @@ fun Context.jumpBrowser(url: String) {
         startActivity(this)
     }
 }
+
+fun Context.jumpPhone(phone: String) {
+    val intent = Intent()
+    intent.action = Intent.ACTION_CALL
+    val data = Uri.parse("tel:$phone")
+    intent.data = data
+    startActivity(intent)
+}

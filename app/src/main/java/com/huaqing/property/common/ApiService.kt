@@ -1,5 +1,6 @@
 package com.huaqing.property.common
 
+import com.huaqing.property.model.Address
 import com.huaqing.property.model.Login
 import com.huaqing.property.model.MyInfo
 import io.reactivex.Flowable
@@ -23,4 +24,7 @@ interface ApiService {
     @GET("/api-company/com/message/messageList")
     fun messageList(): Flowable<ResponseBody>
 
+    @Headers("H_NAME" + ":" + "TOKEN")
+    @GET("/api-company/com/companyInfo/addressList")
+    fun addressList(): Flowable<Address>
 }

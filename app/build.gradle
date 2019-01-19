@@ -178,4 +178,5 @@ dependencies {
     //ui
     implementation 'com.cpacm:floatingmusicmenu:1.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'me.yokeyword:indexablerecyclerview:1.3.0'
 }

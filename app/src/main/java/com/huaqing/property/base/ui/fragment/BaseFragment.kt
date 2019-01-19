@@ -14,6 +14,9 @@ abstract class BaseFragment<B : ViewDataBinding> : BaseInjectFragment() {
 
     protected lateinit var mBinding: B
 
+
+    protected var refreshTime: Long = 0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mRootView = LayoutInflater.from(context).inflate(layoutId, container, false)
         return mRootView
@@ -21,6 +24,7 @@ abstract class BaseFragment<B : ViewDataBinding> : BaseInjectFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mBinding = DataBindingUtil.bind(view)!!
         with(mBinding) {
             setVariable(BR.fragment, this@BaseFragment)

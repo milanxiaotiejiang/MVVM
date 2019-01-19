@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="data"
+                type="com.huaqing.property.model.InfoData"/>
+
+        <variable
+                name="addressEvent"
+                type="com.huaqing.property.common.functional.Consumer"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:background="@color/white"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  app:bind_view_onClick="@{ () -> addressEvent.accept(data.mobile) }">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp">
+
+            <com.huaqing.property.view.CircleImageView
+                    android:id="@+id/head"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    app:bind_imageView_url_circle="@{ data.avatar }"
+            />
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_toRightOf="@+id/head"
+                    android:layout_marginStart="10dp">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:text="@{ data.name }"
+                            android:gravity="center"/>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{ data.department.name }"
+                            android:textSize="16sp"
+                            android:gravity="center"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/adapter_address_list_item_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:layout_marginTop="4dp"
+                        android:text="@{ data.mobile }"
+                        android:gravity="center"/>
+
+            </LinearLayout>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/ic_phone"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="40dp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>

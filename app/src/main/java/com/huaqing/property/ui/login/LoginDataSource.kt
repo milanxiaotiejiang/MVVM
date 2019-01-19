@@ -1,8 +1,6 @@
 package com.huaqing.property.ui.login
 
-import androidx.lifecycle.Transformations.map
 import arrow.core.Either
-import arrow.core.right
 import com.huaqing.property.base.repository.BaseRepositoryBoth
 import com.huaqing.property.base.repository.ILocalDataSource
 import com.huaqing.property.base.repository.IRemoteDataSource
@@ -12,7 +10,6 @@ import com.huaqing.property.common.helper.RxSchedulers
 import com.huaqing.property.common.manager.UserManager
 import com.huaqing.property.db.AppDatabase
 import com.huaqing.property.db.UserInfo
-import com.huaqing.property.model.Data
 import com.huaqing.property.model.Errors
 import io.reactivex.Flowable
 import io.reactivex.Single

@@ -17,6 +17,7 @@ import com.huaqing.property.base.glide.GlideApp
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.ViewPropertyTransition
 import com.huaqing.property.R
+import com.huaqing.property.R.id.skip
 
 
 /**
@@ -100,6 +101,19 @@ fun loadImage(
 
 fun loadImage(context: Context, imageView: ImageView, @Nullable model: Any) {
     loadImage(context, imageView, model, false, DiskCacheStrategy.RESOURCE)
+}
+
+fun loadImageHead(context: Context, imageView: ImageView, @Nullable model: Any) {
+    GlideApp.with(context)
+        .load(model)
+        .apply(
+            RequestOptions()
+                .error(R.drawable.head)
+                .centerCrop()
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        )
+        .into(imageView)
 }
 
 fun loadImage(
