@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+        <import
+                alias="utils"
+                type="com.huaqing.property.ui.main.home.HomeUtils"/>
+
+        <variable
+                name="data"
+                type="com.huaqing.property.model.MessageData"/>
+
+        <variable
+                name="messageEvent"
+                type="com.huaqing.property.common.functional.Consumer"/>
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:background="@color/white"
+                  android:layout_height="wrap_content"
+                  app:bind_view_onClick="@{ () -> messageEvent.accept(data) }">
+
+        <RelativeLayout
+                android:id="@+id/adapter_message_item_rv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+            <com.huaqing.property.view.CircleImageView
+                    android:id="@+id/circleImageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:bind_imageView_url_circle="@{ utils.eventCircle(circleImageView, data) }"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"/>
+
+            <LinearLayout
+                    android:layout_marginStart="80dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ utils.eventTitle(data) }"
+                        android:textSize="16sp"/>
+
+                <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:text="@{ utils.eventContext(data) }"
+                        android:layout_marginTop="5dp"
+                        android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|end"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:text="@{data.createDate}"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tvType"
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:text="@{utils.eventUrgentLevel(tvType, data) }"
+                        android:textSize="10sp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>

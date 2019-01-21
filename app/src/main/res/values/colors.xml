@@ -15,4 +15,12 @@
     <color name="primaryLightColor">#cfd8dc</color>
     <color name="secondaryLightColor">#718792</color>
 
+    <!--一般-->
+    <color name="ordinary_font">#FFBD4A</color>
+    <!--紧急-->
+    <color name="urgency_font">#FF6C00</color>
+    <!--严重-->
+    <color name="severity_font">#FF3030</color>
+
+
 </resources>

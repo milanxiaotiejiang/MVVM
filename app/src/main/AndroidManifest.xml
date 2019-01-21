@@ -35,6 +35,8 @@
         <activity android:name=".ui.MainActivity"
                   android:launchMode="singleTop"/>
         <activity android:name=".ui.setting.SettingActivity"/>
+        <activity android:name=".ui.workorder.WorkOrderActivity"/>
+        <activity android:name=".ui.inform.InformDetailActivity"/>
 
     </application>
 

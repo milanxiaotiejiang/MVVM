@@ -11,10 +11,10 @@ data class Meaasge(
 )
 
 data class MessageData(
-    val content: Any,
+    val content: String,
     val createDate: String,
     val description: String,
-    val title: Any,
+    val title: String,
     val type: String,
     val urgentLevel: String
 )

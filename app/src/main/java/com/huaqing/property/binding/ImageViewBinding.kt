@@ -15,7 +15,7 @@ fun loadImageUrl(imageView: ImageView, model: Any?) {
 }
 
 @BindingAdapter("bind_imageView_url_circle")
-fun loadImageCircle(imageView: ImageView, url: String?) {
+fun loadImageCircle(imageView: ImageView, url: Any?) {
     GlideApp.with(imageView.context)
         .load(url)
         .apply(RequestOptions().circleCrop().error(R.drawable.head))

@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedList
-import arrow.core.Either
 import arrow.core.Option
 import arrow.core.none
 import arrow.core.some
@@ -14,19 +12,15 @@ import com.huaqing.property.R
 import com.huaqing.property.adapter.BaseDataBindingAdapter
 import com.huaqing.property.base.viewmodel.BaseViewModel
 import com.huaqing.property.base.viewstate.ViewState
+import com.huaqing.property.common.functional.Consumer
 import com.huaqing.property.common.helper.RxSchedulers
 import com.huaqing.property.common.viewmodel.loadings.CommonLoadingState
+import com.huaqing.property.databinding.ItemMessageLayoutBinding
 import com.huaqing.property.ext.livedata.toReactiveStream
-import com.huaqing.property.ext.paging.Paging
-import com.huaqing.property.http.globalHandleError
-import com.huaqing.property.model.Errors
-import com.huaqing.property.model.InfoData
-import com.huaqing.property.model.Login
 import com.huaqing.property.model.MessageData
+import com.huaqing.property.ui.workorder.WorkOrderActivity
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
-import io.reactivex.Flowable
-import org.kodein.di.generic.instance
 
 class HomeViewModel(
     private val repo: HomeDataSourceRepository
@@ -40,6 +34,7 @@ class HomeViewModel(
 
     val error: MutableLiveData<Option<Throwable>> = MutableLiveData()
 
+    val messageData: MutableLiveData<MessageData> = MutableLiveData()
 
     init {
         Completable
@@ -50,7 +45,9 @@ class HomeViewModel(
                     .doOnNext { initReceivedEvents() }
                     .ignoreElements(),
                 events.toReactiveStream()
-                    .doOnNext { adapter.notifyDataSetChanged() }
+                    .doOnNext {
+                        adapter.notifyDataSetChanged()
+                    }
                     .ignoreElements()
             )
             .autoDisposable(this)
@@ -61,7 +58,7 @@ class HomeViewModel(
         repo.messageList()
             .map { either ->
                 either.fold({
-                    ViewState.error<List<InfoData>>(it)
+                    ViewState.error<List<MessageData>>(it)
                 }, {
                     ViewState.result(it)
                 })
@@ -103,26 +100,24 @@ class HomeViewModel(
     }
 
 
-//    var adapter: BaseDataBindingAdapter<InfoData, ItemAddressLayoutBinding> =
-//        BaseDataBindingAdapter(
-//            layoutId = R.layout.item_address_layout,
-//            dataSource = {
-//                events.value
-//            } as () -> List<InfoData>,
-//            bindBinding = {
-//                ItemAddressLayoutBinding.bind(it)
-//            },
-//            callback = { data, binding, _ ->
-//                binding.data = data
-//                binding.addressEvent = object : Consumer<Int> {
-//                    override fun accept(t: Int) {
-//                        when (t) {
-//                        }
-//                    }
-//
-//                }
-//            }
-//        )
+    var adapter: BaseDataBindingAdapter<MessageData, ItemMessageLayoutBinding> =
+        BaseDataBindingAdapter(
+            layoutId = R.layout.item_message_layout,
+            dataSource = {
+                events.value
+            } as () -> List<MessageData>,
+            bindBinding = {
+                ItemMessageLayoutBinding.bind(it)
+            },
+            callback = { data, binding, _ ->
+                binding.data = data
+                binding.messageEvent = object : Consumer<MessageData> {
+                    override fun accept(t: MessageData) {
+                        messageData.postValue(t)
+                    }
+                }
+            }
+        )
 
     companion object {
         fun instance(fragment: Fragment, repo: HomeDataSourceRepository): HomeViewModel =
