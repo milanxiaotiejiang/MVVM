@@ -22,5 +22,8 @@
     <!--严重-->
     <color name="severity_font">#FF3030</color>
 
+    <color name="color_menu_normal">#FFFFFF</color>
+    <color name="color_menu_pressed">#F2F2F2</color>
+    <color name="colorUnchecked">#9F9F9F</color>
 
 </resources>

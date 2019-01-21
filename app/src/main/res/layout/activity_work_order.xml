@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable name="activity"
+                  type="com.huaqing.property.ui.workorder.WorkOrderActivity">
+
+        </variable>
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        <include
+                app:delegate="@{ activity.toolbarViewModel }"
+                layout="@layout/toolbar"/>
+
+        <com.huaqing.property.view.PagerSlidingTabStrip
+                android:id="@+id/pagerSlidingTabStrip"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:pstsDividerColor="@color/transparent"
+                app:pstsIndicatorColor="@color/colorPrimaryLight"
+                app:pstsIndicatorHeight="1dp"
+                app:pstsShouldExpand="true"
+                app:pstsTabBackground="@color/transparent"
+                app:pstsTextAllCaps="true"
+                app:pstsUnderlineHeight="1dp"
+                app:selectedTabTextColor="@color/colorPrimaryLight"
+                app:tabTextColor="@color/colorUnchecked"/>
+
+
+        <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bind_viewPager_fragmentManager="@{ activity.getSupportFragmentManager() }"
+                app:bind_viewPager_fragments="@{ activity.initFragments() }"
+                app:bind_viewPager_titles="@{ activity.initTitles() }"
+                app:bind_viewPager_offScreenPageLimit="@{ 3 }"
+                app:bind_viewPager_adapter="@{ () -> activity.onPageAdapter() }"
+        />
+
+    </LinearLayout>
+
+</layout>

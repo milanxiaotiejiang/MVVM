@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/nav_whole"
+            android:title="@string/work_nav_whole"/>
+    <item
+            android:id="@+id/nav_to_be_accepted"
+            android:title="@string/work_nav_to_be_accepted"/>
+    <item
+            android:id="@+id/nav_accepted"
+            android:title="@string/work_nav_accepted"/>
+    <item
+            android:id="@+id/nav_completed"
+            android:title="@string/work_nav_completed"/>
+</menu>

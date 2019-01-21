@@ -7,6 +7,7 @@ import com.huaqing.property.common.viewmodel.toolbar.ToolbarViewModel
 import com.huaqing.property.databinding.FragmentHomeBinding
 import com.huaqing.property.ext.livedata.toReactiveStream
 import com.huaqing.property.ui.inform.InformDetailActivity
+import com.huaqing.property.ui.workorder.WorkOrderActivity
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
 import org.kodein.di.Kodein
@@ -45,17 +46,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 )
                             }
                         } else {
-//                            activity?.let { it1 ->
-//                                WorkOrderActivity.launch(it1, this)
-//                            }
                             activity?.let { it1 ->
-                                InformDetailActivity.launch(
-                                    it1,
-                                    this,
-                                    "title",
-                                    "content",
-                                    "createDate"
-                                )
+                                WorkOrderActivity.launch(it1, this)
                             }
                         }
                     }

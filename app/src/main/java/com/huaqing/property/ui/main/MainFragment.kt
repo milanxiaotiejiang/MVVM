@@ -34,12 +34,18 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     fun initFragments(): List<Fragment> =
         listOf(HomeFragment(), ReposFragment(), ProfileFragment())
 
+    fun initTitles(): List<String> = emptyList()
+
     // port-mode only
     fun onPageSelectChangedPort(index: Int) {
         for (position in 0..index) {
             if (navigation.visibility == View.VISIBLE)
                 navigation.menu.getItem(position).isChecked = index == position
         }
+    }
+
+    fun onPageAdapter(){
+
     }
 
     // port-mode only
