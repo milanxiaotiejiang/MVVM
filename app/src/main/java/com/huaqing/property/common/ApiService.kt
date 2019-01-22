@@ -1,9 +1,6 @@
 package com.huaqing.property.common
 
-import com.huaqing.property.model.Address
-import com.huaqing.property.model.Login
-import com.huaqing.property.model.Meaasge
-import com.huaqing.property.model.MyInfo
+import com.huaqing.property.model.*
 import io.reactivex.Flowable
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -28,4 +25,9 @@ interface ApiService {
     @Headers("H_NAME" + ":" + "TOKEN")
     @GET("/api-company/com/companyInfo/addressList")
     fun addressList(): Flowable<Address>
+
+
+    @Headers("H_NAME" + ":" + "TOKEN")
+    @GET("/api-company/com/workOrder/workOrderList")
+    fun workOrderList(@Query("userId") userId: String, @Query("status") status: String): Flowable<WorkOrder>
 }

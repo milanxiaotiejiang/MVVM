@@ -26,4 +26,12 @@
     <color name="color_menu_pressed">#F2F2F2</color>
     <color name="colorUnchecked">#9F9F9F</color>
 
+    <color name="theme_font_gray_9">#999999</color>
+    <!--已完成-->
+    <color name="accomplish_font">#2DBC6A</color>
+    <!--已受理-->
+    <color name="accepted_font">#FF8400</color>
+    <!--待受理-->
+    <color name="to_accept_font">#1EB8FF</color>
+
 </resources>

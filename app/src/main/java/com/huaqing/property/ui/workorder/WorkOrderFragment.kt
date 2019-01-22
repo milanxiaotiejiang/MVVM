@@ -1,34 +1,57 @@
 package com.huaqing.property.ui.workorder
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.huaqing.property.R
+import com.huaqing.property.base.ui.fragment.BaseFragment
+import com.huaqing.property.common.viewmodel.fabanimate.FabAnimateViewModel
+import com.huaqing.property.common.viewmodel.toolbar.ToolbarViewModel
+import com.huaqing.property.databinding.FragmentWorkBinding
+import com.huaqing.property.ext.livedata.toReactiveStream
+import com.huaqing.property.ui.inform.InformDetailActivity
+import com.uber.autodispose.AutoDispose.autoDisposable
+import com.uber.autodispose.autoDisposable
+import io.reactivex.Completable
+import org.kodein.di.Kodein
+import org.kodein.di.generic.instance
 
-class WorkOrderFragment : Fragment() {
+class WorkOrderFragment : BaseFragment<FragmentWorkBinding>() {
 
-    var status: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        status = arguments!!.getString(STATUS)
+    override val kodein: Kodein = Kodein.lazy {
+        extend(parentKodein)
+        import(workKodeinModule)
     }
 
-    var mRootView: View? = null
+    val viewModel: WorkViewModel by instance()
+    val fabViewModel: FabAnimateViewModel by instance()
+    val toolbarViewModel: ToolbarViewModel by instance()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override val layoutId: Int = R.layout.fragment_work
 
-        mRootView = LayoutInflater.from(context).inflate(R.layout.fragment_work, container, false)
-        return mRootView
+    override fun initView() {
+
+        val arg = arguments!!.getString(STATUS)
+        viewModel.status.postValue(arg)
+
+        Completable
+            .mergeArray(
+                viewModel.workData
+                    .toReactiveStream()
+                    .doOnNext {
+
+                    }
+                    .ignoreElements(),
+                viewModel.notarizeData
+                    .toReactiveStream()
+                    .doOnNext {
+
+                    }
+                    .ignoreElements()
+            )
+            .autoDisposable(viewModel)
+            .subscribe()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mRootView!!.findViewById<TextView>(R.id.tv).text = status
-    }
 
     companion object {
         var STATUS: String = "status"
